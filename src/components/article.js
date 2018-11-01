@@ -1,10 +1,22 @@
 import React, { PureComponent } from 'react'
 import CommentList from './comment-list'
+import PropTypes from 'prop-types'
+import CSSTransition from 'react-addons-css-transition-group'
 
 export default class Article extends PureComponent {
   constructor() {
     super()
     this.buttonTitle = ''
+  }
+
+  state = {
+    error: null
+  }
+
+  componentDidCatch(error) {
+    //console.log(error)
+    //alert(error);
+    this.setState({ error: error })
   }
 
   render() {
@@ -14,8 +26,18 @@ export default class Article extends PureComponent {
     return (
       <div>
         <h3>{article.title}</h3>
-        <button onClick={this.handleClick}>{this.buttonTitle}</button>
+        <button className="test-article_btn" onClick={this.handleClick}>
+          {this.buttonTitle}
+        </button>
         {this.body}
+
+        {/* <CSSTransition
+          //transitionName="article"
+          //transitionEnterTimeout={500}
+          //transitionLeaveTimeout={500}
+        >
+          {this.body}
+</CSSTransition> */}
       </div>
     )
   }
@@ -31,8 +53,8 @@ export default class Article extends PureComponent {
 
     return (
       <div>
-        <section>{article.text}</section>
-        <section>{this.getComments}</section>
+        <section className={'test-article_body'}>{article.text}</section>
+        {this.state.error ? null : <section>{this.getComments}</section>}
       </div>
     )
   }
@@ -42,4 +64,16 @@ export default class Article extends PureComponent {
 
     return <CommentList items={comments} />
   }
+}
+
+Article.propTypes = {
+  article: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    date: PropTypes.date,
+    title: PropTypes.string.isRequired,
+    text: PropTypes.string.isRequired,
+    comments: PropTypes.array
+  }),
+  isOpen: PropTypes.bool,
+  toggleOpen: PropTypes.func
 }
