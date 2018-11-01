@@ -1,7 +1,8 @@
 import React, { PureComponent } from 'react'
-import CommentList from './comment-list'
+import CommentList from '../comments'
 import PropTypes from 'prop-types'
 import CSSTransition from 'react-addons-css-transition-group'
+import './style.css'
 
 export default class Article extends PureComponent {
   constructor() {
@@ -29,15 +30,15 @@ export default class Article extends PureComponent {
         <button className="test-article_btn" onClick={this.handleClick}>
           {this.buttonTitle}
         </button>
-        {this.body}
-
-        {/* <CSSTransition
-          //transitionName="article"
-          //transitionEnterTimeout={500}
-          //transitionLeaveTimeout={500}
+        <CSSTransition
+          transitionName="article"
+          transitionEnterTimeout={500}
+          transitionLeaveTimeout={500}
         >
           {this.body}
-</CSSTransition> */}
+        </CSSTransition>
+
+        {/* {this.body} */}
       </div>
     )
   }

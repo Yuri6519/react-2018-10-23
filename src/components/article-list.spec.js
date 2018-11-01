@@ -31,4 +31,29 @@ describe('Article List', () => {
 
     expect(wrapper.find('.test-article_body').length).toEqual(1) // при нажатии кнопки только одна статья видна
   })
+
+  it('Test render Article on click Close', function() {
+    const wrapper = mount(<DecorArticleList items={articles} />)
+
+    // нашли кнопку
+    const btn = wrapper.find('.test-article_btn').at(0)
+
+    // кликнули первывй раз и открыли статью
+    btn.simulate('click')
+
+    // проверилил, что текст на кнопке теперь  = close
+    expect(btn.text()).toEqual('close')
+
+    // проверили, что есть одна открытая статья
+    expect(wrapper.find('.test-article_body').length).toEqual(1)
+
+    // кликнули на кнопке close
+    btn.simulate('click')
+
+    // проверилил, что текст на кнопке теперь  = open
+    expect(btn.text()).toEqual('open')
+
+    // проверили, что нет открытых статей
+    expect(wrapper.find('.test-article_body').length).toEqual(0)
+  })
 })

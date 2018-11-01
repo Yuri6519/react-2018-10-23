@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
 import ArticleComment from './comment'
-import decorComment from '../decorators/comment-decor'
+import decorComment from '../../decorators/comment-decor'
 import PropTypes from 'prop-types'
+import CSSTransition from 'react-addons-css-transition-group'
+//import './style.css'
 
 class CommentList extends Component {
   static propTypes = {
@@ -33,7 +35,14 @@ class CommentList extends Component {
     return (
       <div>
         <button onClick={this.onButtonClick}>{buttonText}</button>
-        {this.items}
+
+        <CSSTransition
+          transitionName="article"
+          transitionEnterTimeout={500}
+          transitionLeaveTimeout={500}
+        >
+          {this.items}
+        </CSSTransition>
       </div>
     )
   }
