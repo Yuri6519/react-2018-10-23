@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import Article from './article'
-import accordion from '../decorators/accordion'
+import Article from '../article'
+import accordion from '../../decorators/accordion'
 
 export class ArticleList extends Component {
   render() {

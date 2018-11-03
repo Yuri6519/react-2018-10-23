@@ -2,7 +2,7 @@ import React from 'react'
 import Enzyme, { render, shallow, mount } from 'enzyme'
 import AdapterReact16 from 'enzyme-adapter-react-16'
 import DecorArticleList, { ArticleList } from './article-list'
-import articles from '../fixtures'
+import articles from '../../fixtures'
 import { callbackify } from 'util'
 
 Enzyme.configure({ adapter: new AdapterReact16() })
