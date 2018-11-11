@@ -1,4 +1,9 @@
-import { INCREMENT, DELETE_ARTICLE, FILTER_ARTICLE } from '../constants'
+import {
+  INCREMENT,
+  DELETE_ARTICLE,
+  FILTER_ARTICLE,
+  SHOW_COMMENTS
+} from '../constants'
 
 export function incrementActionCreator() {
   return {
@@ -14,10 +19,15 @@ export function deleteArticle(articleId) {
 }
 
 export function filterArticle(selectedOption) {
-  console.log('creater::filterArticle', selectedOption)
-
   return {
     type: FILTER_ARTICLE,
     payload: selectedOption
+  }
+}
+
+export function showComments(comments) {
+  return {
+    type: SHOW_COMMENTS,
+    payload: comments
   }
 }

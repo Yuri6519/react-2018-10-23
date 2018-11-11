@@ -4,6 +4,8 @@ import decorComment from '../../decorators/comment-decor'
 import PropTypes from 'prop-types'
 import CSSTransition from 'react-addons-css-transition-group'
 import './style.css'
+//import { connect } from 'react-redux'
+import { showComments } from './../../ac'
 
 export class CommentList extends Component {
   static propTypes = {
@@ -70,8 +72,17 @@ export class CommentList extends Component {
   }
 
   onButtonClick = () => {
+    console.log('com-lst::onBtnClick', this.props.items)
+
+    //    this.props.dispatchShowComments(this.props.items)
+
     this.props.toggleState()
   }
 }
+
+// export default connect(
+//   null,
+//   { dispatchShowComments: showComments }
+// )(decorComment(CommentList))
 
 export default decorComment(CommentList)

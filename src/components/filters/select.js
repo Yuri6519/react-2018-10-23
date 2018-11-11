@@ -2,6 +2,8 @@ import Select from 'react-select'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { filterArticle } from '../../ac'
+import { articleSelector } from '../../selectors'
+import { selectedOptionSelector } from '../../selectors'
 
 class SelectFilter extends Component {
   // state = {
@@ -34,8 +36,8 @@ class SelectFilter extends Component {
 }
 
 const mapStateToProps = (store) => ({
-  selectedOption: store.selectedOption,
-  articles: store.articles
+  selectedOption: selectedOptionSelector(store),
+  articles: articleSelector(store)
 })
 
 const setDispatchFilterArticle = {

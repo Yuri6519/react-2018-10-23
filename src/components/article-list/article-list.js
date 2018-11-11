@@ -2,9 +2,11 @@ import React, { Component } from 'react'
 import Article from '../article'
 import accordion from '../../decorators/accordion'
 import { connect } from 'react-redux'
+import { filterArticleSelector } from '../../selectors'
 
 export class ArticleList extends Component {
   render() {
+    console.log('article-list.render')
     return <ul>{this.items}</ul>
   }
 
@@ -22,15 +24,8 @@ export class ArticleList extends Component {
 }
 
 const mapStateToProps = (store) => {
-  let arr = store.articles.filter((el) => {
-    return (
-      store.selectedOption.find((elem) => {
-        return elem.value === el.id
-      }) || store.selectedOption.length === 0
-    )
-  })
-
-  return { articles: arr }
+  console.log('article-list.mapStateToProps')
+  return { articles: filterArticleSelector(store) }
 }
 
 export default connect(mapStateToProps)(accordion(ArticleList))
