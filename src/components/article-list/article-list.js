@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import Article from '../article'
 import accordion from '../../decorators/accordion'
+import { connect } from 'react-redux'
 
 export class ArticleList extends Component {
   render() {
@@ -8,7 +9,7 @@ export class ArticleList extends Component {
   }
 
   get items() {
-    return this.props.items.map((item) => (
+    return this.props.articles.map((item) => (
       <li key={item.id} className={'test-article-list-item'}>
         <Article
           article={item}
@@ -20,4 +21,16 @@ export class ArticleList extends Component {
   }
 }
 
-export default accordion(ArticleList)
+const mapStateToProps = (store) => {
+  let arr = store.articles.filter((el) => {
+    return (
+      store.selectedOption.find((elem) => {
+        return elem.value === el.id
+      }) || store.selectedOption.length === 0
+    )
+  })
+
+  return { articles: arr }
+}
+
+export default connect(mapStateToProps)(accordion(ArticleList))

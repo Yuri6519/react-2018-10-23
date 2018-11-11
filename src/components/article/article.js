@@ -1,10 +1,12 @@
 import React, { PureComponent } from 'react'
+import { connect } from 'react-redux'
 import CommentList from '../comments'
 import PropTypes from 'prop-types'
 import CSSTransition from 'react-addons-css-transition-group'
 import './style.css'
+import { deleteArticle } from '../../ac'
 
-export default class Article extends PureComponent {
+class Article extends PureComponent {
   constructor() {
     super()
     this.buttonTitle = ''
@@ -25,9 +27,15 @@ export default class Article extends PureComponent {
     return (
       <div>
         <h3>{article.title}</h3>
+
         <button className="test-article_btn" onClick={this.handleClick}>
           {this.buttonTitle}
         </button>
+
+        <button className="test-article-delete_btn" onClick={this.handleDelete}>
+          {'Delete'}
+        </button>
+
         <CSSTransition
           transitionName="article"
           transitionEnterTimeout={500}
@@ -39,6 +47,10 @@ export default class Article extends PureComponent {
         {/* {this.body} */}
       </div>
     )
+  }
+
+  handleDelete = () => {
+    this.props.dispatchDeleteArticle(this.props.article.id)
   }
 
   handleClick = () => {
@@ -76,3 +88,8 @@ Article.propTypes = {
   isOpen: PropTypes.bool,
   toggleOpen: PropTypes.func
 }
+
+export default connect(
+  null,
+  { dispatchDeleteArticle: deleteArticle }
+)(Article)
