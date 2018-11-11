@@ -6,7 +6,6 @@ import { filterArticleSelector } from '../../selectors'
 
 export class ArticleList extends Component {
   render() {
-    console.log('article-list.render')
     return <ul>{this.items}</ul>
   }
 
@@ -24,7 +23,6 @@ export class ArticleList extends Component {
 }
 
 const mapStateToProps = (store) => {
-  console.log('article-list.mapStateToProps')
   return { articles: filterArticleSelector(store) }
 }
 

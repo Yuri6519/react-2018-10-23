@@ -72,9 +72,6 @@ class Article extends PureComponent {
 
   get getComments() {
     const { comments } = this.props.article
-
-    console.log(this.props.article.comments)
-
     return <CommentList items={comments} />
     //return <CommentList />
   }

@@ -1,8 +1,11 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
+import { createCommentSelector } from '../../selectors'
 
-export default class ArticleComment extends Component {
+class ArticleComment extends Component {
   static propTypes = {
+    id: PropTypes.string,
     item: PropTypes.shape({
       user: PropTypes.string.isRequired,
       text: PropTypes.string.isRequired
@@ -10,6 +13,10 @@ export default class ArticleComment extends Component {
   }
   render() {
     const { item } = this.props
+
+    if (item === undefined) {
+      return null
+    }
 
     return (
       <div>
@@ -21,3 +28,20 @@ export default class ArticleComment extends Component {
     )
   }
 }
+
+// так фаборика не работает - mapStateToProps создается одна для всех
+// const mapStateToProps = (store, parentProps) => {
+
+//   return {
+//     item: commentSelector(store, parentProps)
+//   }
+// }
+
+const initMapStateToProps = () => {
+  // замыкание
+  const commentSelector = createCommentSelector()
+
+  return (store, parentProps) => ({ item: commentSelector(store, parentProps) })
+}
+
+export default connect(initMapStateToProps)(ArticleComment)

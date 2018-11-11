@@ -4,7 +4,7 @@ import decorComment from '../../decorators/comment-decor'
 import PropTypes from 'prop-types'
 import CSSTransition from 'react-addons-css-transition-group'
 import './style.css'
-//import { connect } from 'react-redux'
+import { connect } from 'react-redux'
 import { showComments } from './../../ac'
 
 export class CommentList extends Component {
@@ -66,22 +66,32 @@ export class CommentList extends Component {
   }
 
   get item() {
-    return this.props.items.map((item) => (
-      <li key={item.id}>{<ArticleComment item={item} />}</li>
+    //return this.props.comments.map((item) => ( //моя реализация
+    //return this.props.items.map((item) => (
+
+    return this.props.items.map((itemId) => (
+      // <li key={item.id}>{<ArticleComment item={item} />}</li> // моя реализация
+      <li key={itemId}>{<ArticleComment id={itemId} />}</li>
     ))
   }
 
   onButtonClick = () => {
-    console.log('com-lst::onBtnClick', this.props.items)
-
-    //    this.props.dispatchShowComments(this.props.items)
+    //this.props.dispatchShowComments(this.props.items)
 
     this.props.toggleState()
   }
 }
 
+//моя реализация
+// const mapStateToSore =(store) => {
+//   return {
+//     comments: store.comments
+//   }
+// }
+
+// моя реализация
 // export default connect(
-//   null,
+//   mapStateToSore,
 //   { dispatchShowComments: showComments }
 // )(decorComment(CommentList))
 

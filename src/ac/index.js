@@ -26,6 +26,8 @@ export function filterArticle(selectedOption) {
 }
 
 export function showComments(comments) {
+  //console.log('showComments',comments)
+
   return {
     type: SHOW_COMMENTS,
     payload: comments
