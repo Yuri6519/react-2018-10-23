@@ -17,10 +17,7 @@
 ### Библиотеки, фреймворки:
 - https://redux.js.org/
 - https://react-redux.js.org/
-- https://reacttraining.com/react-router/web/guides/quick-start
 - https://github.com/reduxjs/reselect
-- https://facebook.github.io/immutable-js/
-- https://github.com/reduxjs/redux-thunk
 - https://jestjs.io/ тест раннер
 - https://airbnb.io/enzyme/ утилита для тестирования React компонент
 - https://github.com/nfl/react-helmet утилита для работы с head для React

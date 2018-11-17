@@ -4,32 +4,18 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import CSSTransition from 'react-addons-css-transition-group'
 import './style.css'
-import { deleteArticle, loadArticle } from '../../ac'
-import { articleSelector } from '../../selectors'
-import Loader from '../common/loader'
+import { deleteArticle } from '../../ac'
 
 class Article extends PureComponent {
   state = {
     error: null
   }
-
   componentDidCatch(error) {
     this.setState({ error })
   }
-
-  componentDidMount() {
-    const { loadArticle, article, id } = this.props
-
-    if (!article || (!article.text && !article.loading)) {
-      loadArticle(id)
-    }
-  }
-
   render() {
     const { article, isOpen } = this.props
     const buttonTitle = isOpen ? 'close' : 'open'
-
-    if (!article) return null
 
     return (
       <div>
@@ -65,35 +51,28 @@ class Article extends PureComponent {
   get body() {
     const { isOpen, article } = this.props
 
-    if (article.loading) return <Loader key="loader" />
+    if (!isOpen) return null
 
     return (
-      <section className={'test--article__body'} key="body">
+      <section className={'test--article__body'}>
         {article.text}
-        {this.state.error ? null : <CommentList article={article} />}
+        {this.state.error ? null : <CommentList comments={article.comments} />}
       </section>
     )
   }
 }
 
 Article.propTypes = {
-  id: PropTypes.string,
-
   article: PropTypes.shape({
     id: PropTypes.string,
     text: PropTypes.string,
-    comments: PropTypes.array,
-    loading: PropTypes.bool
+    comments: PropTypes.array
   }),
-  isOpen: PropTypes.bool.isRequired
+  isOpen: PropTypes.bool.isRequired,
+  toggleOpen: PropTypes.func.isRequired
 }
 
 export default connect(
-  (state, ownProps) => ({
-    article: articleSelector(state, ownProps)
-  }),
-  {
-    dispatchDeleteArticle: deleteArticle,
-    loadArticle
-  }
+  null,
+  { dispatchDeleteArticle: deleteArticle }
 )(Article)
