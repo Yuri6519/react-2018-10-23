@@ -2,13 +2,15 @@ import { createSelector } from 'reselect'
 
 export const filtersSelector = (state) => state.filters
 export const articlesSelector = (state) => state.articles
-export const articlesObjectSelector = (state) => state.articleObject
+export const articlesObjectLoadingSelector = (state) => state.articleObject.loading
+export const articlesObjectLoadedSelector = (state) => state.articleObject.loaded
+export const articlesObjectSelector = (state) => state.articleObject.entities
 export const commentsSelector = (state) => state.comments
 export const idSelector = (_, props) => props.id
 
 export const createCommentSelector = () => {
   return createSelector(commentsSelector, idSelector, (comments, id) => {
-    return comments[id]
+    return comments.get(id)
   })
 }
 
@@ -25,7 +27,8 @@ export const filteredArticleSelector = createSelector(
 
     return articlesIds
       .filter((articleId) => {
-        const published = Date.parse(articleObject[articleId].date)
+        //const published = Date.parse(articleObject.getIn(['entities']).get(articleId).date)
+        const published = Date.parse(articleObject.get(articleId).date)
 
         return (
           (!selected.length ||
@@ -34,7 +37,7 @@ export const filteredArticleSelector = createSelector(
         )
       })
       .map((id) => {
-        return articleObject[id]
+        return articleObject.get(id)
       })
   }
 )

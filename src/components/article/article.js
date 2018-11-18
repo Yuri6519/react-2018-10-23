@@ -4,7 +4,9 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import CSSTransition from 'react-addons-css-transition-group'
 import './style.css'
-import { deleteArticle } from '../../ac'
+import { deleteArticle, loadArticle } from '../../ac'
+//import { ifError } from 'assert';
+import Loader from '../common/loader'
 
 class Article extends PureComponent {
   state = {
@@ -13,6 +15,16 @@ class Article extends PureComponent {
   componentDidCatch(error) {
     this.setState({ error })
   }
+
+  componentDidUpdate(oldProps){
+
+    const {isOpen, dispatchLoadArticle, article} = this.props
+
+    if(isOpen && !oldProps.isOpen) {
+      dispatchLoadArticle(article.id)
+    }
+  }
+
   render() {
     const { article, isOpen } = this.props
     const buttonTitle = isOpen ? 'close' : 'open'
@@ -29,15 +41,29 @@ class Article extends PureComponent {
         >
           Delete me
         </button>
-        <CSSTransition
-          transitionName="article"
-          transitionEnterTimeout={500}
-          transitionLeaveTimeout={300}
-        >
-          {this.body}
-        </CSSTransition>
+
+        {this.getRealBody()}
+
       </div>
     )
+  }
+
+  getRealBody = () => {
+    const { isOpen, article } = this.props
+
+    if (isOpen && article.loading) return <Loader />
+
+    return(
+      <CSSTransition
+      transitionName="article"
+      transitionEnterTimeout={500}
+      transitionLeaveTimeout={300}
+    >
+      {this.body}
+    </CSSTransition>
+
+    )
+
   }
 
   handleClick = () => {
@@ -76,5 +102,8 @@ Article.propTypes = {
 
 export default connect(
   null,
-  { dispatchDeleteArticle: deleteArticle }
+  { 
+    dispatchDeleteArticle: deleteArticle,
+    dispatchLoadArticle: loadArticle
+   }
 )(Article)

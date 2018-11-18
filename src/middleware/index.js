@@ -1,5 +1,3 @@
-import { ADD_COMMENT } from '../constants'
-
 export default (store) => (next) => (action) => {
   console.log('begin', store.getState())
   console.log('dispatch action', action)
@@ -14,8 +12,9 @@ export const generateIdMw = (store) => (next) => (action) => {
       .substr(2, 17)
   }
 
-  if (action.type === ADD_COMMENT) {
-    action.payload.comment.id = getId()
+  // if (action.type === ADD_COMMENT) {
+  if (action.isAddComment) {
+      action.payload.comment.id = getId()
   }
 
   next(action)

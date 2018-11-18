@@ -3,7 +3,13 @@ import {
   DELETE_ARTICLE,
   CHANGE_DATE_RANGE,
   CHANGE_SELECTION,
-  ADD_COMMENT
+  ADD_COMMENT,
+  LOAD_ALL_ARTICLES,
+  LOAD_ARTICLE,
+  ASYNC_SUCCESS,
+  ASYNC_START,
+  ASYNC_FAIL
+
 } from '../constants'
 
 export function incrementActionCreator() {
@@ -34,6 +40,50 @@ export function changeSelection(selected) {
 export function addComment(comment) {
   return {
     type: ADD_COMMENT,
-    payload: comment
+    payload: comment,
+    isAddComment: true
   }
+}
+
+export function loadAllArticles() {
+  return {
+    type: LOAD_ALL_ARTICLES,
+    callAPI: '/api/article'
+  }
+
+}
+
+export function loadArticle(id) {
+
+  // через mw
+  // return {
+  //   type: LOAD_ARTICLE,
+  //   callAPI: `/api/article/${articleId}`
+  // }
+
+  // через redux-thunk
+  return function(dispatch) {
+    dispatch({
+        type: LOAD_ARTICLE + ASYNC_START,
+        payload: {id}
+    })
+
+    fetch(`/api/article/${id}`)
+        .then(res => res.json())
+        .then(response => {
+          dispatch({
+            type: LOAD_ARTICLE + ASYNC_SUCCESS,
+            payload: response
+          })
+    
+        })
+        .catch(err =>dispatch({
+          type: LOAD_ARTICLE + ASYNC_FAIL,
+          payload: {id},
+          error: err
+
+        })
+        )
+  }
+
 }

@@ -1,14 +1,21 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { filteredArticleSelector } from '../../selectors'
+import { 
+          filteredArticleSelector, 
+          articlesObjectLoadingSelector ,
+          articlesObjectLoadedSelector
+        } from '../../selectors'
 
 import Article from '../article'
 import accordion from '../../decorators/accordion'
+import { loadAllArticles } from '../../ac'
+import Loader from '../common/loader'
+
 
 export class ArticleList extends Component {
   static propTypes = {
-    articles: PropTypes.array.isRequired,
+    articles: PropTypes.object.isRequired,
     fetchData: PropTypes.func,
 
     //from accordion decorator
@@ -17,11 +24,17 @@ export class ArticleList extends Component {
   }
 
   componentDidMount() {
-    this.props.fetchData && this.props.fetchData()
+    // https://metanit.com/web/react/2.6.php
+    // Здесь можно выполнять запросы к удаленным ресурсам
+    // вызов загрузчика статей
+    !this.props.loaded && this.props.fetchData && this.props.fetchData()
+    
   }
+
   render() {
     console.log('render articles-list')
-    return <ul>{this.items}</ul>
+
+    return this.props.loading ? <Loader /> : <ul>{this.items}</ul>
   }
 
   get items() {
@@ -40,8 +53,13 @@ export class ArticleList extends Component {
 const mapStateToProps = (state) => {
   console.log('connect articles-list')
   return {
-    articles: filteredArticleSelector(state)
+    articles: filteredArticleSelector(state),
+    loading: articlesObjectLoadingSelector(state),
+    loaded: articlesObjectLoadedSelector(state)
   }
 }
 
-export default connect(mapStateToProps)(accordion(ArticleList))
+export default connect(
+  mapStateToProps,
+  {fetchData: loadAllArticles}
+)(accordion(ArticleList))

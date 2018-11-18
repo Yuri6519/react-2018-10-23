@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import Select from 'react-select'
 import { connect } from 'react-redux'
 import { changeSelection } from '../../ac'
-import { filtersSelector, articlesSelector } from '../../selectors'
+import { filtersSelector, articlesSelector, articlesObjectSelector } from '../../selectors'
 
 class SelectFilter extends Component {
   render() {
@@ -30,9 +30,8 @@ class SelectFilter extends Component {
 
 const mapStateToProps = (state) => {
   const articles = articlesSelector(state).map((id) => {
-    return state.articleObject[id]
+    return articlesObjectSelector(state).get(id)
   })
-
   return {
     selected: filtersSelector(state).selected,
     articles: articles
