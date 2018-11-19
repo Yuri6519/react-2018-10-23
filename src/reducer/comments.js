@@ -6,14 +6,9 @@ import {
   ASYNC_SUCCESS,
   ASYNC_FAIL
 } from '../constants'
-import { Map, Record } from 'immutable'
+import { Record } from 'immutable'
 import ReducerRecord, { defaultArticleMapRec } from './reducer-record'
-import { endianness } from 'os'
-
-// const defaultComment = normalizedComments.reduce((acc, comment) => {
-//   acc[comment.id] = comment
-//   return acc
-// }, {})
+//import { endianness } from 'os'
 
 const CommentRecord = Record({
   id: null,
@@ -23,20 +18,6 @@ const CommentRecord = Record({
 
 //export default (commentState = new Map(defaultComment), action) => {
 export default (commentState = new ReducerRecord(), action) => {
-  // нельзя менять объект - возвращаем новый
-  // if (action.type === ADD_COMMENT) {
-  //   const retObj = commentState
-  //     .updateIn(['entities'], (entities) => {
-  //       return (entities.set(action.payload.comment.id, action.payload.comment))
-  //     })
-  //     //.set(action.payload.comment.id, action.payload.comment)
-
-  //     console.log('commentReducer::',retObj)
-
-  //     return retObj
-
-  // }
-
   switch (action.type) {
     case LOAD_ALL_COMMENTS + ASYNC_START:
       return commentState.set('loading', true)
