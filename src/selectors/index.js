@@ -1,15 +1,23 @@
 import { createSelector } from 'reselect'
 
 export const filtersSelector = (state) => state.filters
+
 export const articlesSelector = (state) => state.articles
-export const articlesObjectLoadingSelector = (state) => state.articleObject.loading
-export const articlesObjectLoadedSelector = (state) => state.articleObject.loaded
+export const articlesObjectLoadingSelector = (state) =>
+  state.articleObject.loading
+export const articlesObjectLoadedSelector = (state) =>
+  state.articleObject.loaded
 export const articlesObjectSelector = (state) => state.articleObject.entities
-export const commentsSelector = (state) => state.comments
+
+export const commentsSelector = (state) => state.comments.entities
+export const commentObjectLoadingSelector = (state) => state.comments.loading
+export const commentObjectLoadedSelector = (state) => state.comments.loaded
+
 export const idSelector = (_, props) => props.id
 
 export const createCommentSelector = () => {
   return createSelector(commentsSelector, idSelector, (comments, id) => {
+    // return comments.getIn(['entities']).get(id)
     return comments.get(id)
   })
 }

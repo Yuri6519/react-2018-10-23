@@ -1,43 +1,25 @@
-import { 
-          DELETE_ARTICLE, 
-          ADD_COMMENT, 
-          LOAD_ALL_ARTICLES,
-          LOAD_ARTICLE,
-          ASYNC_SUCCESS,
-          ASYNC_FAIL,
-          ASYNC_START
-        } from '../constants/index'
+import {
+  DELETE_ARTICLE,
+  ADD_COMMENT,
+  LOAD_ALL_ARTICLES,
+  LOAD_ARTICLE,
+  ASYNC_SUCCESS,
+  ASYNC_FAIL,
+  ASYNC_START
+} from '../constants/index'
 //import { normalizedArticles } from '../fixtures'
-import { OrderedMap, Map, List, Set, Record } from 'immutable'
-
-// const defaultArticle = normalizedArticles.reduce((acc, article) => {
-//   acc[article.id] = article
-//   return acc
-// }, {})
-
-const defaultArticleMapRec = (arr, ItemRec) => {
-  return arr.reduce((acc, item) => {
-    return acc.set(item.id, ItemRec ? new ItemRec(item) : item) 
-  }, new OrderedMap()
-  )
-}
+import { List, Record } from 'immutable'
+import ReducerRecord, { defaultArticleMapRec } from './reducer-record'
 
 const ArticleRecord = Record({
   id: null,
   date: null,
   title: null,
-  text:null,
+  text: null,
   comments: [],
   //--//
   loading: false,
-  loaded: false,
-})
-
-const ReducerRecord = Record({
-  entities: defaultArticleMapRec([], ArticleRecord),
-  loading: false,
-  loaded: false,
-  error: null
+  loaded: false
 })
 
 // вместо массива статей будем храниить их идшки
@@ -51,9 +33,7 @@ export default (articleState = new List([]), action) => {
   }
 
   if (action.type === LOAD_ALL_ARTICLES + ASYNC_SUCCESS) {
-    return new List(
-      action.response.map((article) => article.id)
-    )
+    return new List(action.response.map((article) => article.id))
   }
 
   return articleState
@@ -62,12 +42,14 @@ export default (articleState = new List([]), action) => {
 // добавим в стор объект с артиклами
 //export const articlesObjectReducer = (state = defaultArticleMapRec([], ArticleRecord), action) => {
 export const articlesObjectReducer = (state = new ReducerRecord(), action) => {
-
   if (action.type === ADD_COMMENT) {
     // добавим ИД коммента в массив комментов артикла
-    return state.updateIn(['entities', action.payload.articleId, 'comments'],
+    return state.updateIn(
+      ['entities', action.payload.articleId, 'comments'],
       (comments) => {
-        return comments ? comments.concat(action.payload.comment.id) : [action.payload.comment.id]
+        return comments
+          ? comments.concat(action.payload.comment.id)
+          : [action.payload.comment.id]
       }
     )
   }
@@ -81,9 +63,9 @@ export const articlesObjectReducer = (state = new ReducerRecord(), action) => {
 
   if (action.type === LOAD_ALL_ARTICLES + ASYNC_SUCCESS) {
     return state
-              .set('entities', defaultArticleMapRec(action.response, ArticleRecord))
-              .set('loading', false)
-              .set('loaded', true)
+      .set('entities', defaultArticleMapRec(action.response, ArticleRecord))
+      .set('loading', false)
+      .set('loaded', true)
   }
 
   if (action.type === LOAD_ALL_ARTICLES + ASYNC_FAIL) {
@@ -93,17 +75,15 @@ export const articlesObjectReducer = (state = new ReducerRecord(), action) => {
   // LOAD ARTICLE
 
   if (action.type === LOAD_ARTICLE + ASYNC_START) {
-    const articleId = action.payload.id;
+    const articleId = action.payload.id
 
     return state.updateIn(['entities', articleId, 'loading'], () => {
       return true
     })
   }
 
-
   if (action.type === LOAD_ARTICLE + ASYNC_SUCCESS) {
-    
-    const articleId = action.payload.id;
+    const articleId = action.payload.id
 
     return state
       .updateIn(['entities', articleId, 'text'], () => {
@@ -115,9 +95,7 @@ export const articlesObjectReducer = (state = new ReducerRecord(), action) => {
       .updateIn(['entities', articleId, 'loaded'], () => {
         return true
       })
-
   }
-
 
   return state
 }

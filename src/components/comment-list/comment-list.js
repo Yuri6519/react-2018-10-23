@@ -4,6 +4,14 @@ import CSSTransition from 'react-addons-css-transition-group'
 import Comment from '../comment'
 import toggleOpenItem from '../../decorators/toggleOpen'
 import { UserCommentForm } from '../user-form'
+import { connect } from 'react-redux'
+import { loadAllComments } from '../../ac'
+import Loader from '../common/loader'
+
+import {
+  commentObjectLoadingSelector,
+  commentObjectLoadedSelector
+} from '../../selectors'
 
 class CommentList extends Component {
   static propTypes = {
@@ -13,16 +21,35 @@ class CommentList extends Component {
     toggleOpenItem: PropTypes.func
   }
 
-  render() {
-    const { isOpen, toggleOpenItem, articleId } = this.props
+  componentDidUpdate() {
+    const { isOpen, loaded, loading } = this.props
 
-    const text = isOpen ? 'hide comments' : 'show comments'
+    isOpen && (!loaded && !loading) && this.props.fetchData()
+  }
+
+  render() {
     return (
       <div>
-        <button onClick={toggleOpenItem} className="test--comment-list__btn">
-          {text}
-        </button>
+        {this.getButton()}
+        {this.getCommentsBody()}
+      </div>
+    )
+  }
 
+  getCommentsBody() {
+    const { isOpen, articleId, loading, loaded } = this.props
+
+    if (!isOpen) return null
+
+    console.log('render comment-list', loading)
+    console.log('render comment-list', loaded)
+
+    if (loading || !loaded) return <Loader />
+
+    //return <div>STUB...</div>
+
+    return (
+      <>
         <UserCommentForm articleId={articleId} />
 
         <CSSTransition
@@ -32,9 +59,20 @@ class CommentList extends Component {
         >
           {this.getBody()}
         </CSSTransition>
-      </div>
+      </>
     )
   }
+
+  getButton() {
+    const { isOpen, toggleOpenItem } = this.props
+    const text = isOpen ? 'hide comments' : 'show comments'
+    return (
+      <button onClick={toggleOpenItem} className="test--comment-list__btn">
+        {text}
+      </button>
+    )
+  }
+
   getBody() {
     const { comments = [], isOpen } = this.props
     if (!isOpen) return null
@@ -60,4 +98,16 @@ class CommentList extends Component {
     )
   }
 }
-export default toggleOpenItem(CommentList)
+
+const mapStateToProps = (state) => {
+  console.log('connect comment-list')
+  return {
+    loading: commentObjectLoadingSelector(state),
+    loaded: commentObjectLoadedSelector(state)
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  { fetchData: loadAllComments }
+)(toggleOpenItem(CommentList))
