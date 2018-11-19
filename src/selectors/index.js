@@ -48,3 +48,9 @@ export const filteredArticleSelector = createSelector(
       })
   }
 )
+
+export const articleSelector = createSelector(
+  articlesObjectSelector,
+  idSelector,
+  (articlesObject, id) => articlesObject.get(id)
+)

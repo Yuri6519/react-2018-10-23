@@ -7,6 +7,8 @@ import './style.css'
 import { deleteArticle, loadArticle } from '../../ac'
 //import { ifError } from 'assert';
 import Loader from '../common/loader'
+//import { prototype } from 'stream';
+import {articleSelector} from '../../selectors'
 
 class Article extends PureComponent {
   state = {
@@ -16,17 +18,31 @@ class Article extends PureComponent {
     this.setState({ error })
   }
 
-  componentDidUpdate(oldProps) {
-    const { isOpen, dispatchLoadArticle, article } = this.props
+  // componentDidUpdate(oldProps) {
+  //   // ранее приходила статья
+  //   const { isOpen, dispatchLoadArticle, article } = this.props
 
-    if (isOpen && !oldProps.isOpen) {
-      dispatchLoadArticle(article.id)
+  //   if (isOpen && !oldProps.isOpen) {
+  //     dispatchLoadArticle(article.id)
+  //   }
+  // }
+
+  componentDidMount() {
+    // теперь приходит id
+    const {id, article, dispatchLoadArticle} = this.props
+
+    if(!article || (!article.text && !article.loading)) {
+      dispatchLoadArticle(id)
     }
+
   }
+
 
   render() {
     const { article, isOpen } = this.props
     const buttonTitle = isOpen ? 'close' : 'open'
+
+    if(!article) return null
 
     return (
       <div>
@@ -87,19 +103,24 @@ class Article extends PureComponent {
 }
 
 Article.propTypes = {
-  article: PropTypes.shape({
-    id: PropTypes.string,
-    text: PropTypes.string,
-    comments: PropTypes.array
-  }),
-  isOpen: PropTypes.bool.isRequired,
-  toggleOpen: PropTypes.func.isRequired
+  id: PropTypes.string,
+
+  // article: PropTypes.shape({
+  //   id: PropTypes.string,
+  //   text: PropTypes.string,
+  //   comments: PropTypes.array
+  // }),
+  // isOpen: PropTypes.bool.isRequired,
+  // toggleOpen: PropTypes.func.isRequired
 }
 
 export default connect(
-  null,
+  (state, ownProps) => ({
+    article: articleSelector(state, ownProps)
+  }),
   {
     dispatchDeleteArticle: deleteArticle,
     dispatchLoadArticle: loadArticle
   }
-)(Article)
+)(Article)  
+

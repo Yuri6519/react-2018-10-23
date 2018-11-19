@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import UserForm from './user-form'
 import Filters from './filters'
 import Counter from './counter'
-import { Route, Link, NavLink } from 'react-router-dom'
+import { Route, Link, NavLink, Switch } from 'react-router-dom'
 import ArticlesRoute from '../routes/articles'
 
 export default class App extends Component {
@@ -32,11 +32,14 @@ export default class App extends Component {
             </NavLink>
           </div>
         </div>
-        <Route path="/counter" component={Counter} />
-        <Route path="/filters" component={Filters} />
-        {/* <Route path="/articles" component={Filters} /> */
-        /* для показа и статей и фильтра */}
-        <Route path="/articles" component={ArticlesRoute} />
+        <Switch>
+          <Route path="/counter" exact component={Counter} />
+          <Route path="/filters" component={Filters} />
+          {/* <Route path="/articles" component={Filters} /> */
+          /* для показа и статей и фильтра */}
+          <Route path="/articles/new" render={() => <h2>New article</h2>} />
+          <Route path="/articles" component={ArticlesRoute} />
+        </Switch>
       </div>
     )
   }

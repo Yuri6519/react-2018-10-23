@@ -15,7 +15,7 @@ class ArticlesRoute extends Component {
 
   getArticle = ({ match }) => {
     // Здесь запись {match}  - деструктуризация объекта, который передается при вызове
-    return <Article id={match.params.id} isOpen />
+    return <Article id={match.params.id} isOpen key={match.params.id} />
     //return <h1>{match.params.id} </h1>
   }
 }
