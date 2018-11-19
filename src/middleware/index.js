@@ -14,7 +14,7 @@ export const generateIdMw = (store) => (next) => (action) => {
 
   // if (action.type === ADD_COMMENT) {
   if (action.isAddComment) {
-      action.payload.comment.id = getId()
+    action.payload.comment.id = getId()
   }
 
   next(action)

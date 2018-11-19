@@ -1,17 +1,16 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { 
-          filteredArticleSelector, 
-          articlesObjectLoadingSelector ,
-          articlesObjectLoadedSelector
-        } from '../../selectors'
+import {
+  filteredArticleSelector,
+  articlesObjectLoadingSelector,
+  articlesObjectLoadedSelector
+} from '../../selectors'
 
 import Article from '../article'
 import accordion from '../../decorators/accordion'
 import { loadAllArticles } from '../../ac'
 import Loader from '../common/loader'
-
 
 export class ArticleList extends Component {
   static propTypes = {
@@ -28,7 +27,6 @@ export class ArticleList extends Component {
     // Здесь можно выполнять запросы к удаленным ресурсам
     // вызов загрузчика статей
     !this.props.loaded && this.props.fetchData && this.props.fetchData()
-    
   }
 
   render() {
@@ -61,5 +59,5 @@ const mapStateToProps = (state) => {
 
 export default connect(
   mapStateToProps,
-  {fetchData: loadAllArticles}
+  { fetchData: loadAllArticles }
 )(accordion(ArticleList))

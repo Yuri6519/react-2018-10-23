@@ -16,11 +16,10 @@ class Article extends PureComponent {
     this.setState({ error })
   }
 
-  componentDidUpdate(oldProps){
+  componentDidUpdate(oldProps) {
+    const { isOpen, dispatchLoadArticle, article } = this.props
 
-    const {isOpen, dispatchLoadArticle, article} = this.props
-
-    if(isOpen && !oldProps.isOpen) {
+    if (isOpen && !oldProps.isOpen) {
       dispatchLoadArticle(article.id)
     }
   }
@@ -43,7 +42,6 @@ class Article extends PureComponent {
         </button>
 
         {this.getRealBody()}
-
       </div>
     )
   }
@@ -53,17 +51,15 @@ class Article extends PureComponent {
 
     if (isOpen && article.loading) return <Loader />
 
-    return(
+    return (
       <CSSTransition
-      transitionName="article"
-      transitionEnterTimeout={500}
-      transitionLeaveTimeout={300}
-    >
-      {this.body}
-    </CSSTransition>
-
+        transitionName="article"
+        transitionEnterTimeout={500}
+        transitionLeaveTimeout={300}
+      >
+        {this.body}
+      </CSSTransition>
     )
-
   }
 
   handleClick = () => {
@@ -102,8 +98,8 @@ Article.propTypes = {
 
 export default connect(
   null,
-  { 
+  {
     dispatchDeleteArticle: deleteArticle,
     dispatchLoadArticle: loadArticle
-   }
+  }
 )(Article)

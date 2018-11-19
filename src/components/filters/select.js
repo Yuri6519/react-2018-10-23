@@ -2,7 +2,11 @@ import React, { Component } from 'react'
 import Select from 'react-select'
 import { connect } from 'react-redux'
 import { changeSelection } from '../../ac'
-import { filtersSelector, articlesSelector, articlesObjectSelector } from '../../selectors'
+import {
+  filtersSelector,
+  articlesSelector,
+  articlesObjectSelector
+} from '../../selectors'
 
 class SelectFilter extends Component {
   render() {
