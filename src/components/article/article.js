@@ -8,7 +8,7 @@ import { deleteArticle, loadArticle } from '../../ac'
 //import { ifError } from 'assert';
 import Loader from '../common/loader'
 //import { prototype } from 'stream';
-import {articleSelector} from '../../selectors'
+import { articleSelector } from '../../selectors'
 
 class Article extends PureComponent {
   state = {
@@ -29,20 +29,18 @@ class Article extends PureComponent {
 
   componentDidMount() {
     // теперь приходит id
-    const {id, article, dispatchLoadArticle} = this.props
+    const { id, article, dispatchLoadArticle } = this.props
 
-    if(!article || (!article.text && !article.loading)) {
+    if (!article || (!article.text && !article.loading)) {
       dispatchLoadArticle(id)
     }
-
   }
-
 
   render() {
     const { article, isOpen } = this.props
     const buttonTitle = isOpen ? 'close' : 'open'
 
-    if(!article) return null
+    if (!article) return null
 
     return (
       <div>
@@ -79,7 +77,7 @@ class Article extends PureComponent {
   }
 
   handleClick = () => {
-    this.props.toggleOpen(this.props.article.id)
+    //this.props.toggleOpen(this.props.article.id)
   }
 
   handleDelete = () => {
@@ -103,7 +101,7 @@ class Article extends PureComponent {
 }
 
 Article.propTypes = {
-  id: PropTypes.string,
+  id: PropTypes.string
 
   // article: PropTypes.shape({
   //   id: PropTypes.string,
@@ -122,5 +120,4 @@ export default connect(
     dispatchDeleteArticle: deleteArticle,
     dispatchLoadArticle: loadArticle
   }
-)(Article)  
-
+)(Article)

@@ -41,8 +41,8 @@ class CommentList extends Component {
 
     if (!isOpen) return null
 
-    console.log('render comment-list', loading)
-    console.log('render comment-list', loaded)
+    //console.log('render comment-list', loading)
+    //console.log('render comment-list', loaded)
 
     if (loading || !loaded) return <Loader />
 

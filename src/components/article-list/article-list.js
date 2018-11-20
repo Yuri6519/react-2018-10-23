@@ -7,7 +7,7 @@ import {
   articlesObjectLoadedSelector
 } from '../../selectors'
 
-import Article from '../article'
+//import Article from '../article'
 import accordion from '../../decorators/accordion'
 import { loadAllArticles } from '../../ac'
 import Loader from '../common/loader'

@@ -5,6 +5,8 @@ import Filters from './filters'
 import Counter from './counter'
 import { Route, Link, NavLink, Switch } from 'react-router-dom'
 import ArticlesRoute from '../routes/articles'
+//import { AllComments } from '../components/comment-list'
+import CommentsRoot from '../routes/comments-root'
 
 export default class App extends Component {
   render() {
@@ -31,6 +33,11 @@ export default class App extends Component {
               Articles
             </NavLink>
           </div>
+          <div>
+            <NavLink to="/comments" activeStyle={{ color: 'red' }}>
+              Comments
+            </NavLink>
+          </div>
         </div>
         <Switch>
           <Route path="/counter" exact component={Counter} />
@@ -39,6 +46,7 @@ export default class App extends Component {
           /* для показа и статей и фильтра */}
           <Route path="/articles/new" render={() => <h2>New article</h2>} />
           <Route path="/articles" component={ArticlesRoute} />
+          <Route path="/comments" component={CommentsRoot} />
         </Switch>
       </div>
     )
