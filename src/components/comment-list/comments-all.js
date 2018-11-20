@@ -45,20 +45,31 @@ class CommentsAll extends Component {
   }
 
   get comments() {
+    const { page } = this.props
+
+    const obj = {
+      '1': [0, 4],
+      '2': [5, 9],
+      '3': [10, 14],
+      '4': [15, 15]
+    }
+
+    const minInd = obj[page][0]
+    const maxInd = obj[page][1]
+
     return (
       <>
-        {/* <div>
-                <NavLink to={`/comments/${1}`} activeStyle={{ color: 'red' }}>
-                    <h3>Page 1</h3>
-                </NavLink>
-            </div> */}
-
         <ul>
-          {this.props.comments.map((commentId) => (
-            <li key={commentId} className="test--comment-list__item">
-              <Comment id={commentId} />
-            </li>
-          ))}
+          {this.props.comments
+            .filter((_, index) => {
+              console.log(index)
+              return index >= minInd && index <= maxInd
+            })
+            .map((commentId) => (
+              <li key={commentId} className="test--comment-list__item">
+                <Comment id={commentId} />
+              </li>
+            ))}
         </ul>
       </>
     )
@@ -74,18 +85,18 @@ const mapStateToProps = (state) => {
 
   //const arr = Object.keys(localComments.toJS());
 
-  const obj = {
-    '1': [0, 4],
-    '2': [5, 9],
-    '3': [9, 14],
-    '4': [15, 16]
-  }
+  //   const obj = {
+  //     '1': [0, 4],
+  //     '2': [5, 9],
+  //     '3': [9, 14],
+  //     '4': [15, 16]
+  //   }
 
-  console.log(obj)
+  //   console.log(obj)
 
   return {
     comments: Object.keys(localComments.toJS()),
-    objCom: obj,
+    // objCom: obj,
     loading: commentObjectLoadingSelector(state),
     loaded: commentObjectLoadedSelector(state)
   }
