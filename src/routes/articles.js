@@ -1,12 +1,21 @@
 import React, { Component } from 'react'
 import ArticleList from '../components/article-list'
 import Article from '../components/article'
-import { Route } from 'react-router-dom'
+import { Route, Switch } from 'react-router-dom'
 
 class ArticlesRoute extends Component {
   render() {
     return (
       <div>
+        <Route
+          path="/articles/"
+          exact
+          render={() => (
+            <div>
+              <p>Выберите статью</p>{' '}
+            </div>
+          )}
+        />
         <ArticleList />
         <Route path="/articles/:id" render={this.getArticle} />
       </div>
