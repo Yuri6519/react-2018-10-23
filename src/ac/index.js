@@ -7,6 +7,7 @@ import {
   LOAD_ALL_ARTICLES,
   LOAD_ALL_COMMENTS,
   LOAD_ARTICLE,
+  SHOW_COMMENT_PAGES,
   ASYNC_SUCCESS,
   ASYNC_START,
   ASYNC_FAIL
@@ -88,5 +89,12 @@ export function loadAllComments() {
   return {
     type: LOAD_ALL_COMMENTS,
     callAPI: '/api/comment'
+  }
+}
+
+export function showLoadPages(comment_total){
+  return {
+    type: SHOW_COMMENT_PAGES,
+    payload: {comment_total}
   }
 }

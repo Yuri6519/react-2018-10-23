@@ -1,4 +1,4 @@
-import { normalizedComments } from '../fixtures'
+//import { normalizedComments } from '../fixtures'
 import {
   ADD_COMMENT,
   LOAD_ALL_COMMENTS,
@@ -35,8 +35,8 @@ export default (commentState = new ReducerRecord(), action) => {
       return commentState.set('error', action.error)
 
     case ADD_COMMENT: {
-      console.log('commentReducer::ADD_COMMENT::action', action)
-      console.log('commentReducer::ADD_COMMENT::commentState', commentState)
+      //console.log('commentReducer::ADD_COMMENT::action', action)
+      //console.log('commentReducer::ADD_COMMENT::commentState', commentState)
 
       return commentState.updateIn(['entities'], (entities) => {
         return entities.set(action.payload.comment.id, action.payload.comment)

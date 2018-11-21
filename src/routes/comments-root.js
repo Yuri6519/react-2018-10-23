@@ -1,13 +1,35 @@
 import React, { Component } from 'react'
 import { AllComments } from '../components/comment-list'
 import { Route } from 'react-router-dom'
-import { NavLink } from 'react-router-dom'
+//import { NavLink } from 'react-router-dom'
+import Pages from '../components/comment_pages'
+import { connect } from 'react-redux'
+import { loadAllComments } from '../ac'
+import Loader from '../components/common/loader'
+
+
+import {
+  commentsSelector,
+  commentObjectLoadingSelector,
+  commentObjectLoadedSelector
+} from '../selectors'
+
 
 class CommentsRoot extends Component {
+
+  componentDidMount(){
+    //console.log('CommentsRoot::componentDidMount')
+
+    const { loaded, loading } = this.props
+
+    !loaded && !loading && this.props.fetchData()
+
+  }
+
   render() {
     return (
       <div>
-        {this.getLinks()}
+        {this.getPages()}
 
         {/* <Route path="/comments" exact render={() => <AllComments page="1"/>} /> */}
         <Route path="/comments/:page" render={this.getComments} />
@@ -15,20 +37,18 @@ class CommentsRoot extends Component {
     )
   }
 
-  getLinks() {
-    const pages = [1, 2, 3, 4]
+  getPages(){
+    const { loading, loaded, comment_total } = this.props
 
-    return pages.map((itr) => {
-      return (
-        <NavLink
-          to={`/comments/${itr}`}
-          activeStyle={{ color: 'red' }}
-          key={itr}
-        >
-          <h3>Page {itr}</h3>
-        </NavLink>
-      )
-    })
+     console.log('Pages::render::Body::comment_total=', comment_total)
+
+    if (!comment_total || comment_total === 0) {
+      if (loading || !loaded) return <Loader />
+      else return null
+    }
+
+    return <Pages />
+
   }
 
   getComments = ({ match }) => {
@@ -38,6 +58,23 @@ class CommentsRoot extends Component {
 
     return <AllComments page={match.params.page} />
   }
+
 }
 
-export default CommentsRoot
+const mapStateToProps = (state) => {
+  const localComments = commentsSelector(state)
+  const comment_total = Object.keys(localComments.toJS()).length
+
+  return {
+      comment_total: comment_total,
+      loading: commentObjectLoadingSelector(state),
+      loaded: commentObjectLoadedSelector(state),
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  { 
+      fetchData: loadAllComments,
+   }
+)(CommentsRoot)

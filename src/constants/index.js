@@ -19,3 +19,7 @@ export const ASYNC_SUCCESS = '_ASYNC_SUCCESS'
 export const ASYNC_FAIL = '_ASYNC_FAIL'
 
 export const LOAD_ALL_COMMENTS = 'LOAD_ALL_COMMENTS'
+
+export const SHOW_COMMENT_PAGES = 'SHOW_COMMENT_PAGES'
+
+export const COMMENT_PAGES_COUNT = 5

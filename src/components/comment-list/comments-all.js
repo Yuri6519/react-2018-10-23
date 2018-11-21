@@ -1,14 +1,10 @@
 import React, { Component } from 'react'
 import Comment from '../comment'
 import { connect } from 'react-redux'
-import { loadAllComments } from '../../ac'
-import Loader from '../common/loader'
-import { NavLink } from 'react-router-dom'
 
 import {
   commentsSelector,
-  commentObjectLoadingSelector,
-  commentObjectLoadedSelector
+  pageCommentSelector
 } from '../../selectors'
 
 class CommentsAll extends Component {
@@ -16,21 +12,14 @@ class CommentsAll extends Component {
     return <div>{this.getBody()}</div>
   }
 
-  componentDidMount() {
-    const { loaded, loading } = this.props
-
-    !loaded && !loading && this.props.fetchData()
-  }
-
   getBody() {
-    const { page, loading, loaded, comments = [] } = this.props
+    const { comments = [] } = this.props
 
-    console.log('all_comm::componentDidMount::page=', page)
-    console.log('all_comm::componentDidMount::comments=', comments)
+    // console.log('all_comm::componentDidMount::page=', page)
+    // console.log('all_comm::componentDidMount::comments=', comments)
 
     if (!comments || comments.length === 0) {
-      if (loading || !loaded) return <Loader />
-      else return null
+      return null
     }
 
     return (
@@ -45,24 +34,21 @@ class CommentsAll extends Component {
   }
 
   get comments() {
-    const { page } = this.props
+    const { page, pages, comment_total } = this.props
 
-    const obj = {
-      '1': [0, 4],
-      '2': [5, 9],
-      '3': [10, 14],
-      '4': [15, 15]
-    }
+    const obj = pages.get(parseInt(page,10))
 
-    const minInd = obj[page][0]
-    const maxInd = obj[page][1]
+    if (!obj) return null
+
+    const minInd = obj.min
+    const maxInd = obj.max > comment_total ? comment_total : obj.max 
 
     return (
       <>
-        <ul>
+        <ul> 
+          комментарии с {minInd+1} по {maxInd === comment_total ? comment_total : maxInd+1}
           {this.props.comments
             .filter((_, index) => {
-              console.log(index)
               return index >= minInd && index <= maxInd
             })
             .map((commentId) => (
@@ -80,29 +66,15 @@ const mapStateToProps = (state) => {
   console.log('connect comment-all--list')
 
   const localComments = commentsSelector(state)
-
-  //console.log('localComments.toJS.Keys',Object.keys(localComments.toJS()))
-
-  //const arr = Object.keys(localComments.toJS());
-
-  //   const obj = {
-  //     '1': [0, 4],
-  //     '2': [5, 9],
-  //     '3': [9, 14],
-  //     '4': [15, 16]
-  //   }
-
-  //   console.log(obj)
+  const comment_total = Object.keys(localComments.toJS()).length
 
   return {
     comments: Object.keys(localComments.toJS()),
-    // objCom: obj,
-    loading: commentObjectLoadingSelector(state),
-    loaded: commentObjectLoadedSelector(state)
+    pages: pageCommentSelector(state),
+    comment_total: comment_total
   }
 }
 
 export default connect(
-  mapStateToProps,
-  { fetchData: loadAllComments }
+  mapStateToProps
 )(CommentsAll)
