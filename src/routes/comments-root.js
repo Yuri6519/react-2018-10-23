@@ -31,7 +31,7 @@ class CommentsRoot extends Component {
       <div>
         {this.getPages()}
 
-        {/* <Route path="/comments" exact render={() => <AllComments page="1"/>} /> */}
+        <Route path="/comments" exact render={() => <AllComments page="1"/>} />
         <Route path="/comments/:page" render={this.getComments} />
       </div>
     )

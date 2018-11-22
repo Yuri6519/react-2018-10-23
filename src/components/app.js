@@ -42,8 +42,8 @@ export default class App extends Component {
         <Switch>
           <Route path="/counter" exact component={Counter} />
           <Route path="/filters" component={Filters} />
-          {/* <Route path="/articles" component={Filters} /> */
-          /* для показа и статей и фильтра */}
+          {/* <Route path="/articles" component={Filters} />  */}
+          {/* для показа и статей и фильтра*/ }
           <Route path="/articles/new" render={() => <h2>New article</h2>} />
           <Route path="/articles" component={ArticlesRoute} />
           <Route path="/comments" component={CommentsRoot} />
