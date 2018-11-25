@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { AllComments } from '../components/comment-list'
-import { Route } from 'react-router-dom'
+import { Route, Redirect } from 'react-router-dom'
 //import { NavLink } from 'react-router-dom'
 import Pages from '../components/comment_pages'
 import { connect } from 'react-redux'
@@ -31,16 +31,26 @@ class CommentsRoot extends Component {
       <div>
         {this.getPages()}
 
-        <Route path="/comments" exact render={() => <AllComments page="1"/>} />
+        {this.getBody()}
+
+        {/* <Route path="/comments" exact render={() => <AllComments page="1"/>} /> */}
+        <Route path="/comments" exact render={this.getBody} />
         <Route path="/comments/:page" render={this.getComments} />
       </div>
     )
   }
 
+  getBody = (obj) => {
+    //console.log('getBody::obj', obj)
+
+    return !obj ? null : !obj.match.isExact ? null : <Redirect to="/comments/1" />
+
+  }
+
   getPages(){
     const { loading, loaded, comment_total } = this.props
 
-     console.log('Pages::render::Body::comment_total=', comment_total)
+     //console.log('Pages::render::Body::comment_total=', comment_total)
 
     if (!comment_total || comment_total === 0) {
       if (loading || !loaded) return <Loader />
@@ -53,10 +63,9 @@ class CommentsRoot extends Component {
 
   getComments = ({ match }) => {
     // Здесь запись {match}  - деструктуризация объекта, который передается при вызове
+    //console.log('getComments::match', match)
 
-    console.log('getComments::match', match)
-
-    return <AllComments page={match.params.page} />
+    return<AllComments page={match.params.page} />
   }
 
 }

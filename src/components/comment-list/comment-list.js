@@ -7,6 +7,8 @@ import { UserCommentForm } from '../user-form'
 import { connect } from 'react-redux'
 import { loadAllComments } from '../../ac'
 import Loader from '../common/loader'
+import {Consumer as AuthConsumer} from '../../context/auth'
+import {Consumer as LocalConsumer} from '../../context/localization'
 
 import {
   commentObjectLoadingSelector,
@@ -28,6 +30,10 @@ class CommentList extends Component {
   }
 
   render() {
+
+//console.log('comment-list::render::HEREHEREHERE')
+
+
     return (
       <div>
         {this.getButton()}
@@ -43,6 +49,7 @@ class CommentList extends Component {
 
     //console.log('render comment-list', loading)
     //console.log('render comment-list', loaded)
+    //console.log('render comment-list::AuthConsumer', AuthConsumer.value)
 
     if (loading || !loaded) return <Loader />
 
@@ -50,10 +57,19 @@ class CommentList extends Component {
 
     return (
       <>
+        <AuthConsumer>
+          {(value) => {
+
+//console.log('comment-list::AuthConsumer::value', value)
+
+
+          return <h2>{value.userNameFromContext}</h2>}
+          }
+        </AuthConsumer>
         <UserCommentForm articleId={articleId} />
 
         <CSSTransition
-          transitionName="comments"
+          transitionName="comments" 
           transitionEnterTimeout={500}
           transitionLeaveTimeout={500}
         >
@@ -63,12 +79,18 @@ class CommentList extends Component {
     )
   }
 
+  getTextForCommentButton({commentButtonTitleShow, commentButtonTitleHide}){
+    const { isOpen } = this.props
+    return isOpen ? commentButtonTitleHide : commentButtonTitleShow
+  }
+
   getButton() {
-    const { isOpen, toggleOpenItem } = this.props
-    const text = isOpen ? 'hide comments' : 'show comments'
+    const { toggleOpenItem } = this.props
     return (
       <button onClick={toggleOpenItem} className="test--comment-list__btn">
-        {text}
+      <LocalConsumer>
+        {(value)=>this.getTextForCommentButton(value)}
+      </LocalConsumer>
       </button>
     )
   }
@@ -81,7 +103,11 @@ class CommentList extends Component {
         {comments.length ? (
           this.comments
         ) : (
-          <h3 className="test--comment-list__empty">No comments yet</h3>
+          <h3 className="test--comment-list__empty">
+            <LocalConsumer>
+              {(value)=>value.commentNoCommentText}
+            </LocalConsumer>
+          </h3>
         )}
       </div>
     )

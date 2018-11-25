@@ -7,48 +7,70 @@ import { Route, NavLink, Switch } from 'react-router-dom'
 import ArticlesRoute from '../routes/articles'
 //import { AllComments } from '../components/comment-list'
 import CommentsRoot from '../routes/comments-root'
+import Menu, {MenuItem} from '../components/menu'
+import {Provider as AuthProvider} from '../context/auth'
+import {Provider as LanguageProvider} from '../context/localization'
+import {localLangRUS, localLangENG} from '../components/common/localization'
+import {LOCAL_LANG_RUS} from '../constants'
+
 
 export default class App extends Component {
+  state = {
+    userName: '',
+    lang: LOCAL_LANG_RUS
+  }
+
+  handleUserChange = (userName) => {
+    this.setState({userName})
+  }
+
+  toggleLanguage= (lang) => {
+    this.setState({lang})
+  }
+
   render() {
-    return (
-      <div>
-        <UserForm />
+
+    const objForLocalLang = this.state.lang === LOCAL_LANG_RUS ? localLangRUS : localLangENG
+
+    return (  
+      <LanguageProvider value={objForLocalLang}>
         <div>
+          <UserForm 
+              onChange={this.handleUserChange} 
+              value={this.state.userName} 
+              onButtonClick={this.toggleLanguage} 
+              currentLang={this.state.lang}
+          />
           <div>
-            <NavLink
-              to="/counter"
-              activeStyle={{ color: 'red' }}
-              activeClassName="myClass"
-            >
-              Counter
-            </NavLink>
+            <Menu>
+              <MenuItem to="/counter" name="menuCounter">Counter</MenuItem>
+              <MenuItem to="/filters" name="menuFilters">Filters</MenuItem>
+              <MenuItem to="/articles" name="menuArticles">Articles</MenuItem>
+              <MenuItem to="/comments" name="menuComments">Comments</MenuItem>
+            </Menu>
           </div>
-          <div>
-            <NavLink to="/filters" activeStyle={{ color: 'red' }}>
-              Filters
-            </NavLink>
-          </div>
-          <div>
-            <NavLink to="/articles" activeStyle={{ color: 'red' }}>
-              Articles
-            </NavLink>
-          </div>
-          <div>
-            <NavLink to="/comments" activeStyle={{ color: 'red' }}>
-              Comments
-            </NavLink>
-          </div>
+
+          <Switch>
+            <Route path="/counter" exact component={Counter} />
+            <Route path="/filters" component={Filters} />
+            {/* <Route path="/articles" component={Filters} />  */}
+            {/* для показа и статей и фильтра*/ }
+            <Route path="/articles/new" render={() => <h2>New article</h2>} />
+
+            <Route path="/comments" component={CommentsRoot} />
+            <Route path="/error" render={() => <h2 >Ошибка</h2>} />
+
+            <AuthProvider 
+                value={
+                  {
+                    userNameFromContext: this.state.userName
+                  }
+                }>
+                  <Route path="/articles" component={ArticlesRoute} />
+            </AuthProvider>
+          </Switch>
         </div>
-        <Switch>
-          <Route path="/counter" exact component={Counter} />
-          <Route path="/filters" component={Filters} />
-          {/* <Route path="/articles" component={Filters} />  */}
-          {/* для показа и статей и фильтра*/ }
-          <Route path="/articles/new" render={() => <h2>New article</h2>} />
-          <Route path="/articles" component={ArticlesRoute} />
-          <Route path="/comments" component={CommentsRoot} />
-        </Switch>
-      </div>
+      </LanguageProvider>
     )
   }
 }

@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import Comment from '../comment'
 import { connect } from 'react-redux'
+import { Redirect } from 'react-router-dom'
+import {Consumer as LocalConsumer} from '../../context/localization'
 
 import {
   commentsSelector,
@@ -27,14 +29,38 @@ class CommentsAll extends Component {
         {comments.length ? (
           this.comments
         ) : (
-          <h3 className="test--comment-list__empty">No comments yet</h3>
+          <h3 className="test--comment-list__empty">
+            <LocalConsumer>
+              {(value)=>value.commentNoCommentText}
+            </LocalConsumer>
+          </h3>
         )}
       </div>
     )
   }
 
+  getCommentsCounterTitle(comment_total, minInd, maxInd, value){
+
+    return value.pageCommentsFromTitle + (minInd+1) + value.pageCommentsToTitle + (maxInd === comment_total ? comment_total : maxInd+1)
+
+  }  
+
   get comments() {
     const { page, pages, comment_total } = this.props
+
+    // console.log('all_comm::comments::pages=', pages)    
+    // console.log('all_comm::comments::page=', page)    
+    // console.log('all_comm::comments::pages.size=', pages.size)    
+
+    if (pages.size === 0) return null
+
+    if(parseInt(page,10) > pages.size){
+      return <Redirect to={`/comments/${pages.size}`} />
+    }
+
+    if(parseInt(page,10) < 1){
+      return <Redirect to={`/comments/${1}`} />
+    }
 
     const obj = pages.get(parseInt(page,10))
 
@@ -46,7 +72,15 @@ class CommentsAll extends Component {
     return (
       <>
         <ul> 
-          комментарии с {minInd+1} по {maxInd === comment_total ? comment_total : maxInd+1}
+          <LocalConsumer>
+            {(value)=>this.getCommentsCounterTitle(comment_total, minInd, maxInd, value)}
+          </LocalConsumer>
+
+          
+          
+          {/* комментарии с {minInd+1} по {maxInd === comment_total ? comment_total : maxInd+1} */}
+
+
           {this.props.comments
             .filter((_, index) => {
               return index >= minInd && index <= maxInd

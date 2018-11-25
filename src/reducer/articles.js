@@ -63,7 +63,7 @@ export const articlesObjectReducer = (state = new ReducerRecord(), action) => {
 
   if (action.type === LOAD_ALL_ARTICLES + ASYNC_SUCCESS) {
     return state
-      .set('entities', defaultArticleMapRec(action.response, ArticleRecord))
+      .update('entities', (entities) => defaultArticleMapRec(action.response, ArticleRecord).merge(entities))
       .set('loading', false)
       .set('loaded', true)
   }
@@ -86,9 +86,10 @@ export const articlesObjectReducer = (state = new ReducerRecord(), action) => {
     const articleId = action.payload.id
 
     return state
-      .updateIn(['entities', articleId, 'text'], () => {
-        return action.payload.text
-      })
+      // .updateIn(['entities', articleId, 'text'], () => {
+      //   return action.payload.text
+      // })
+      .setIn(['entities', articleId], new ArticleRecord(action.payload))
       .updateIn(['entities', articleId, 'loading'], () => {
         return false
       })

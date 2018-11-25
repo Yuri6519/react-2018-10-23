@@ -9,6 +9,8 @@ import { deleteArticle, loadArticle } from '../../ac'
 import Loader from '../common/loader'
 //import { prototype } from 'stream';
 import { articleSelector } from '../../selectors'
+import {Consumer as LocalConsumer} from '../../context/localization'
+import {Redirect} from 'react-router-dom'
 
 class Article extends PureComponent {
   state = {
@@ -36,24 +38,35 @@ class Article extends PureComponent {
     }
   }
 
+  buttonTitle({articleButtonTitleOpen, articleButtonTitleClose}){
+    const { isOpen } = this.props
+    
+    return isOpen ? articleButtonTitleClose : articleButtonTitleOpen
+
+  }
+
   render() {
-    const { article, isOpen } = this.props
-    const buttonTitle = isOpen ? 'close' : 'open'
+    const { article } = this.props
+
+
+console.log('ARTICLE::RENDER::article', article)    
+
 
     if (!article) return null
 
     return (
       <div>
-        <h3>{article.title}</h3>
-        <button onClick={this.handleClick} className={'test--article__btn'}>
-          {buttonTitle}
+        {/* <button onClick={this.handleClick} className={'test--article__btn'}>
+          <LocalConsumer>
+            {(value) => this.buttonTitle(value)}
+          </LocalConsumer>
         </button>
         <button
           onClick={this.handleDelete}
           className={'test--article-delete__btn'}
         >
-          Delete me
-        </button>
+          <LocalConsumer>{(value)=>value.articleButtonTitleDeleteMe}</LocalConsumer>
+        </button> */}
 
         {this.getRealBody()}
       </div>
@@ -89,9 +102,30 @@ class Article extends PureComponent {
 
     if (!isOpen) return null
 
+    // console.log('ARTICLE::body::loaded',article.loaded)
+    // console.log('ARTICLE::body::text',article.text)
+    // console.log('ARTICLE::body::id',article.id)
+
+    //if (!article.text && article.id) return <Redirect to={`/articles/${article.id}`} />
+
     return (
       <section className={'test--article__body'}>
-        {article.text}
+        <h3>{article.title}</h3>
+        <button onClick={this.handleClick} className={'test--article__btn'}>
+          <LocalConsumer>
+            {(value) => this.buttonTitle(value)}
+          </LocalConsumer>
+        </button>
+        <button
+          onClick={this.handleDelete}
+          className={'test--article-delete__btn'}
+        >
+          <LocalConsumer>{(value)=>value.articleButtonTitleDeleteMe}</LocalConsumer>
+        </button>
+
+        <div>
+          {article.text}
+        </div>
         {this.state.error ? null : (
           <CommentList comments={article.comments} articleId={article.id} />
         )}

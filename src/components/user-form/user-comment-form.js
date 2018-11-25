@@ -1,32 +1,39 @@
 import React, { Component } from 'react'
 import { addComment } from '../../ac'
 import { connect } from 'react-redux'
+import {Consumer as LocalConsumer} from '../../context/localization'
 
 class UserComment extends Component {
   render() {
     return (
       <form>
-        <div>Добавить комментарий</div>
+        <div><LocalConsumer>{(value)=>value.commentAddTitle}</LocalConsumer></div>
         <div>
           <section>
-            пользователь:
+            <LocalConsumer>{(value)=>value.commentAddUser}</LocalConsumer>
             <input
               id="inputUser"
               required={true}
               minLength={2}
               maxLength={100}
             />
-            <button onClick={this.handleClick}>Добавить</button>
+            <button onClick={this.handleClick}>
+            <LocalConsumer>{(value)=>value.commentButtonAddTitle}</LocalConsumer>
+            </button>
           </section>
           <section>
-            <textarea
-              id="textComment"
-              rows="4"
-              cols="100"
-              name="comment"
-              placeholder="Введите комментарий..."
-              required={true}
-            />
+          <LocalConsumer>{
+            (value) =>
+              <textarea
+                id="textComment"
+                rows="4"
+                cols="100"
+                name="comment"
+                placeholder={value.commentTextAreaPlaceHolder}
+                required={true}
+              />
+          }
+          </LocalConsumer>
           </section>
         </div>
       </form>

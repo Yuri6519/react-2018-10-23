@@ -13,6 +13,8 @@ import {
   ASYNC_FAIL
 } from '../constants'
 
+import {push, replace} from 'connected-react-router'
+
 export function incrementActionCreator() {
   return { type: INCREMENT }
 }
@@ -68,19 +70,31 @@ export function loadArticle(id) {
     })
 
     fetch(`/api/article/${id}`)
-      .then((res) => res.json())
+      .then((res) => {
+        if(res.status >= 400){
+          throw new Error(res.status + '.' + res.statusText)
+        }
+        return res.json()
+      })
       .then((response) => {
         dispatch({
           type: LOAD_ARTICLE + ASYNC_SUCCESS,
           payload: response
         })
       })
-      .catch((err) =>
+      .catch((err) => {
+
+console.log('catch::err::', err)
+
+        dispatch(replace('/error'))
+
+        // этор уже не надо
         dispatch({
           type: LOAD_ARTICLE + ASYNC_FAIL,
           payload: { id },
           error: err
         })
+      }
       )
   }
 }

@@ -23,3 +23,8 @@ export const LOAD_ALL_COMMENTS = 'LOAD_ALL_COMMENTS'
 export const SHOW_COMMENT_PAGES = 'SHOW_COMMENT_PAGES'
 
 export const COMMENT_PAGES_COUNT = 5
+
+export const LOCAL_LANG_RUS = 'RU'
+
+export const LOCAL_LANG_ENG = 'EN'
+

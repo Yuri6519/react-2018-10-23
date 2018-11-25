@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { NavLink } from 'react-router-dom'
 import { showLoadPages } from '../../ac'
 import {COMMENT_PAGES_COUNT} from '../../constants'
-
+import {Consumer as LocalConsumer} from '../../context/localization'
 
 
 import {
@@ -28,8 +28,8 @@ class Pages extends Component{
 
         // console.log('Pages::setPages::pages', pages)
         // console.log('Pages::setPages::comment_total', comment_total)
-        console.log('Pages::setPages::=pageCount', pageCount)
-        console.log('Pages::setPages::=pagesTotal', pagesTotal)
+        // console.log('Pages::setPages::=pageCount', pageCount)
+        // console.log('Pages::setPages::=pagesTotal', pagesTotal)
 
         if(pageCount !== pagesTotal){
             this.props.setCommentPages(comment_total)
@@ -40,7 +40,12 @@ class Pages extends Component{
     get Body() {
         const { comment_total } = this.props
         return <div>
-                    <p>Всего комментариев: {comment_total}</p>
+                    <p> 
+                        <LocalConsumer>
+                            {(value)=>value.pageTotalCommentsTitle}
+                        </LocalConsumer>
+                        {' '}{comment_total}
+                    </p>
                     {this.getLinks()}
                 </div>
     }
@@ -55,7 +60,10 @@ class Pages extends Component{
             activeStyle={{ color: 'red' }}
             key={itr}
             >
-            <h4>Page {itr}</h4>
+            <h4>
+                <LocalConsumer>{(value)=>value.pageTitle}</LocalConsumer>{' '}
+                {itr}
+            </h4>
             </NavLink>
         )
         })
