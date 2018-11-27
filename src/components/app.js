@@ -1,17 +1,15 @@
 import React, { Component } from 'react'
-//import ArticleList from './article-list'
 import UserForm from './user-form'
 import Filters from './filters'
 import Counter from './counter'
 import { Route, NavLink, Switch } from 'react-router-dom'
 import ArticlesRoute from '../routes/articles'
-//import { AllComments } from '../components/comment-list'
 import CommentsRoot from '../routes/comments-root'
 import Menu, { MenuItem } from '../components/menu'
 import { Provider as AuthProvider } from '../context/auth'
-import { languageContect } from '../context/localization'
-import { languageObject } from '../context/localization'
 import { LOCAL_LANG_RUS } from '../constants'
+
+import { LanguageProviderObject } from '../context/localization'
 
 export default class App extends Component {
   state = {
@@ -28,13 +26,8 @@ export default class App extends Component {
   }
 
   render() {
-    const objForLocalLang =
-      this.state.lang === LOCAL_LANG_RUS ? languageObject.ru : languageObject.en
-
-    const LanguageProvider = languageContect.Provider
-
     return (
-      <LanguageProvider value={objForLocalLang}>
+      <LanguageProviderObject lang={this.state.lang}>
         <div>
           <UserForm
             onChange={this.handleUserChange}
@@ -78,7 +71,7 @@ export default class App extends Component {
             </AuthProvider>
           </Switch>
         </div>
-      </LanguageProvider>
+      </LanguageProviderObject>
     )
   }
 }
