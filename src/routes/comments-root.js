@@ -7,23 +7,19 @@ import { connect } from 'react-redux'
 import { loadAllComments } from '../ac'
 import Loader from '../components/common/loader'
 
-
 import {
   commentsSelector,
   commentObjectLoadingSelector,
   commentObjectLoadedSelector
 } from '../selectors'
 
-
 class CommentsRoot extends Component {
-
-  componentDidMount(){
+  componentDidMount() {
     //console.log('CommentsRoot::componentDidMount')
 
     const { loaded, loading } = this.props
 
     !loaded && !loading && this.props.fetchData()
-
   }
 
   render() {
@@ -43,14 +39,15 @@ class CommentsRoot extends Component {
   getBody = (obj) => {
     //console.log('getBody::obj', obj)
 
-    return !obj ? null : !obj.match.isExact ? null : <Redirect to="/comments/1" />
-
+    return !obj ? null : !obj.match.isExact ? null : (
+      <Redirect to="/comments/1" />
+    )
   }
 
-  getPages(){
+  getPages() {
     const { loading, loaded, comment_total } = this.props
 
-     //console.log('Pages::render::Body::comment_total=', comment_total)
+    //console.log('Pages::render::Body::comment_total=', comment_total)
 
     if (!comment_total || comment_total === 0) {
       if (loading || !loaded) return <Loader />
@@ -58,16 +55,14 @@ class CommentsRoot extends Component {
     }
 
     return <Pages />
-
   }
 
   getComments = ({ match }) => {
     // Здесь запись {match}  - деструктуризация объекта, который передается при вызове
     //console.log('getComments::match', match)
 
-    return<AllComments page={match.params.page} />
+    return <AllComments page={match.params.page} />
   }
-
 }
 
 const mapStateToProps = (state) => {
@@ -75,15 +70,15 @@ const mapStateToProps = (state) => {
   const comment_total = Object.keys(localComments.toJS()).length
 
   return {
-      comment_total: comment_total,
-      loading: commentObjectLoadingSelector(state),
-      loaded: commentObjectLoadedSelector(state),
+    comment_total: comment_total,
+    loading: commentObjectLoadingSelector(state),
+    loaded: commentObjectLoadedSelector(state)
   }
 }
 
 export default connect(
   mapStateToProps,
-  { 
-      fetchData: loadAllComments,
-   }
+  {
+    fetchData: loadAllComments
+  }
 )(CommentsRoot)

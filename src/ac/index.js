@@ -13,7 +13,7 @@ import {
   ASYNC_FAIL
 } from '../constants'
 
-import {push, replace} from 'connected-react-router'
+import { push, replace } from 'connected-react-router'
 
 export function incrementActionCreator() {
   return { type: INCREMENT }
@@ -71,7 +71,7 @@ export function loadArticle(id) {
 
     fetch(`/api/article/${id}`)
       .then((res) => {
-        if(res.status >= 400){
+        if (res.status >= 400) {
           throw new Error(res.status + '.' + res.statusText)
         }
         return res.json()
@@ -83,8 +83,7 @@ export function loadArticle(id) {
         })
       })
       .catch((err) => {
-
-console.log('catch::err::', err)
+        console.log('catch::err::', err)
 
         dispatch(replace('/error'))
 
@@ -94,8 +93,7 @@ console.log('catch::err::', err)
           payload: { id },
           error: err
         })
-      }
-      )
+      })
   }
 }
 
@@ -106,9 +104,9 @@ export function loadAllComments() {
   }
 }
 
-export function showLoadPages(comment_total){
+export function showLoadPages(comment_total) {
   return {
     type: SHOW_COMMENT_PAGES,
-    payload: {comment_total}
+    payload: { comment_total }
   }
 }

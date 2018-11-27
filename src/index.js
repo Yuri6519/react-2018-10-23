@@ -5,7 +5,7 @@ import App from './components/app'
 import store from './store'
 //import { BrowserRouter } from 'react-router-dom'
 import history from './history'
-import {ConnectedRouter} from 'connected-react-router'
+import { ConnectedRouter } from 'connected-react-router'
 
 ReactDOM.render(
   <Provider store={store}>

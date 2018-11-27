@@ -3,7 +3,7 @@ import reducer from '../reducer'
 import logger, { generateIdMw } from '../middleware'
 import api from '../middleware/api'
 import thunk from 'redux-thunk'
-import {routerMiddleware} from 'connected-react-router'
+import { routerMiddleware } from 'connected-react-router'
 import history from '../history'
 
 const composeEnhancers =
@@ -14,8 +14,8 @@ const composeEnhancers =
     : compose
 
 const enhancer = composeEnhancers(
-  applyMiddleware(thunk), 
-  applyMiddleware(routerMiddleware(history)), 
+  applyMiddleware(thunk),
+  applyMiddleware(routerMiddleware(history)),
   applyMiddleware(api),
   applyMiddleware(generateIdMw),
   applyMiddleware(logger)

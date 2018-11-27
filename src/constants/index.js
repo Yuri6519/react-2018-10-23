@@ -27,4 +27,3 @@ export const COMMENT_PAGES_COUNT = 5
 export const LOCAL_LANG_RUS = 'RU'
 
 export const LOCAL_LANG_ENG = 'EN'
-
