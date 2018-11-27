@@ -1,12 +1,14 @@
 import React from 'react'
-import {Consumer as LocalConsumer} from '../../../context/localization'
+import { languageContect } from '../../../context/localization'
 
 const Loader = () => {
-  return <h3>
-          <LocalConsumer>
-            {(value)=>value.loaderTitle}
-          </LocalConsumer>
-         </h3>
+  const LanguageConsumer = languageContect.Consumer
+
+  return (
+    <h3>
+      <LanguageConsumer>{(value) => value.loaderTitle}</LanguageConsumer>
+    </h3>
+  )
 }
 
 export default Loader

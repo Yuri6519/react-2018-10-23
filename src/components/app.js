@@ -7,12 +7,11 @@ import { Route, NavLink, Switch } from 'react-router-dom'
 import ArticlesRoute from '../routes/articles'
 //import { AllComments } from '../components/comment-list'
 import CommentsRoot from '../routes/comments-root'
-import Menu, {MenuItem} from '../components/menu'
-import {Provider as AuthProvider} from '../context/auth'
-import {Provider as LanguageProvider} from '../context/localization'
-import {localLangRUS, localLangENG} from '../components/common/localization'
-import {LOCAL_LANG_RUS} from '../constants'
-
+import Menu, { MenuItem } from '../components/menu'
+import { Provider as AuthProvider } from '../context/auth'
+import { languageContect } from '../context/localization'
+import { languageObject } from '../context/localization'
+import { LOCAL_LANG_RUS } from '../constants'
 
 export default class App extends Component {
   state = {
@@ -21,32 +20,42 @@ export default class App extends Component {
   }
 
   handleUserChange = (userName) => {
-    this.setState({userName})
+    this.setState({ userName })
   }
 
-  toggleLanguage= (lang) => {
-    this.setState({lang})
+  toggleLanguage = (lang) => {
+    this.setState({ lang })
   }
 
   render() {
+    const objForLocalLang =
+      this.state.lang === LOCAL_LANG_RUS ? languageObject.ru : languageObject.en
 
-    const objForLocalLang = this.state.lang === LOCAL_LANG_RUS ? localLangRUS : localLangENG
+    const LanguageProvider = languageContect.Provider
 
-    return (  
+    return (
       <LanguageProvider value={objForLocalLang}>
         <div>
-          <UserForm 
-              onChange={this.handleUserChange} 
-              value={this.state.userName} 
-              onButtonClick={this.toggleLanguage} 
-              currentLang={this.state.lang}
+          <UserForm
+            onChange={this.handleUserChange}
+            value={this.state.userName}
+            onButtonClick={this.toggleLanguage}
+            currentLang={this.state.lang}
           />
           <div>
             <Menu>
-              <MenuItem to="/counter" name="menuCounter">Counter</MenuItem>
-              <MenuItem to="/filters" name="menuFilters">Filters</MenuItem>
-              <MenuItem to="/articles" name="menuArticles">Articles</MenuItem>
-              <MenuItem to="/comments" name="menuComments">Comments</MenuItem>
+              <MenuItem to="/counter" name="menuCounter">
+                Counter
+              </MenuItem>
+              <MenuItem to="/filters" name="menuFilters">
+                Filters
+              </MenuItem>
+              <MenuItem to="/articles" name="menuArticles">
+                Articles
+              </MenuItem>
+              <MenuItem to="/comments" name="menuComments">
+                Comments
+              </MenuItem>
             </Menu>
           </div>
 
@@ -54,19 +63,18 @@ export default class App extends Component {
             <Route path="/counter" exact component={Counter} />
             <Route path="/filters" component={Filters} />
             {/* <Route path="/articles" component={Filters} />  */}
-            {/* для показа и статей и фильтра*/ }
+            {/* для показа и статей и фильтра*/}
             <Route path="/articles/new" render={() => <h2>New article</h2>} />
 
             <Route path="/comments" component={CommentsRoot} />
-            <Route path="/error" render={() => <h2 >Ошибка</h2>} />
+            <Route path="/error" render={() => <h2>Ошибка</h2>} />
 
-            <AuthProvider 
-                value={
-                  {
-                    userNameFromContext: this.state.userName
-                  }
-                }>
-                  <Route path="/articles" component={ArticlesRoute} />
+            <AuthProvider
+              value={{
+                userNameFromContext: this.state.userName
+              }}
+            >
+              <Route path="/articles" component={ArticlesRoute} />
             </AuthProvider>
           </Switch>
         </div>

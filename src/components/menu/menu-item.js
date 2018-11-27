@@ -1,12 +1,11 @@
 import React from 'react'
-import {NavLink} from 'react-router-dom'
-import {Consumer as LanguageConsumer} from '../../context/localization'
+import { NavLink } from 'react-router-dom'
+import { languageContect } from '../../context/localization'
 
-function getLocalNameForChildren(name, value){
+function getLocalNameForChildren(name, value) {
+  //console.log(Object.entries(value))
 
-//console.log(Object.entries(value))
-
-  const arr = Object.entries(value).filter((itr) =>{
+  const arr = Object.entries(value).filter((itr) => {
     return itr[0] === name
   })
 
@@ -14,26 +13,24 @@ function getLocalNameForChildren(name, value){
   // console.log(arr[0][0])
   // console.log(arr[0][1])
 
-
   return arr[0][1]
 }
 
-function MenuItem({children, name, ...rest}){
-    return(
-        <div>
-        <NavLink {...rest} activeStyle={{ color: 'red' }}>
-          <LanguageConsumer>
+function MenuItem({ children, name, ...rest }) {
+  const LanguageConsumer = languageContect.Consumer
+
+  return (
+    <div>
+      <NavLink {...rest} activeStyle={{ color: 'red' }}>
+        <LanguageConsumer>
           {(value) => {
-
-            return  getLocalNameForChildren(name, value)
-
+            return getLocalNameForChildren(name, value)
           }}
 
-            {/* {children}             */}
-          </LanguageConsumer>
-        </NavLink>
-      </div>
-
-    )
+          {/* {children}             */}
+        </LanguageConsumer>
+      </NavLink>
+    </div>
+  )
 }
 export default MenuItem

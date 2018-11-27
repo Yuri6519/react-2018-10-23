@@ -2,12 +2,9 @@ import React, { Component } from 'react'
 import Comment from '../comment'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
-import {Consumer as LocalConsumer} from '../../context/localization'
+import { languageContect } from '../../context/localization'
 
-import {
-  commentsSelector,
-  pageCommentSelector
-} from '../../selectors'
+import { commentsSelector, pageCommentSelector } from '../../selectors'
 
 class CommentsAll extends Component {
   render() {
@@ -24,62 +21,65 @@ class CommentsAll extends Component {
       return null
     }
 
+    const LanguageConsumer = languageContect.Consumer
     return (
       <div className="test--comment-list__body">
         {comments.length ? (
           this.comments
         ) : (
           <h3 className="test--comment-list__empty">
-            <LocalConsumer>
-              {(value)=>value.commentNoCommentText}
-            </LocalConsumer>
+            <LanguageConsumer>
+              {(value) => value.commentNoCommentText}
+            </LanguageConsumer>
           </h3>
         )}
       </div>
     )
   }
 
-  getCommentsCounterTitle(comment_total, minInd, maxInd, value){
-
-    return value.pageCommentsFromTitle + (minInd+1) + value.pageCommentsToTitle + (maxInd === comment_total ? comment_total : maxInd+1)
-
-  }  
+  getCommentsCounterTitle(comment_total, minInd, maxInd, value) {
+    return (
+      value.pageCommentsFromTitle +
+      (minInd + 1) +
+      value.pageCommentsToTitle +
+      (maxInd === comment_total ? comment_total : maxInd + 1)
+    )
+  }
 
   get comments() {
     const { page, pages, comment_total } = this.props
 
-    // console.log('all_comm::comments::pages=', pages)    
-    // console.log('all_comm::comments::page=', page)    
-    // console.log('all_comm::comments::pages.size=', pages.size)    
+    // console.log('all_comm::comments::pages=', pages)
+    // console.log('all_comm::comments::page=', page)
+    // console.log('all_comm::comments::pages.size=', pages.size)
 
     if (pages.size === 0) return null
 
-    if(parseInt(page,10) > pages.size){
+    if (parseInt(page, 10) > pages.size) {
       return <Redirect to={`/comments/${pages.size}`} />
     }
 
-    if(parseInt(page,10) < 1){
+    if (parseInt(page, 10) < 1) {
       return <Redirect to={`/comments/${1}`} />
     }
 
-    const obj = pages.get(parseInt(page,10))
+    const obj = pages.get(parseInt(page, 10))
 
     if (!obj) return null
 
     const minInd = obj.min
-    const maxInd = obj.max > comment_total ? comment_total : obj.max 
-
+    const maxInd = obj.max > comment_total ? comment_total : obj.max
+    const LanguageConsumer = languageContect.Consumer
     return (
       <>
-        <ul> 
-          <LocalConsumer>
-            {(value)=>this.getCommentsCounterTitle(comment_total, minInd, maxInd, value)}
-          </LocalConsumer>
+        <ul>
+          <LanguageConsumer>
+            {(value) =>
+              this.getCommentsCounterTitle(comment_total, minInd, maxInd, value)
+            }
+          </LanguageConsumer>
 
-          
-          
           {/* комментарии с {minInd+1} по {maxInd === comment_total ? comment_total : maxInd+1} */}
-
 
           {this.props.comments
             .filter((_, index) => {
@@ -109,6 +109,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(
-  mapStateToProps
-)(CommentsAll)
+export default connect(mapStateToProps)(CommentsAll)

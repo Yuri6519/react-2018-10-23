@@ -5,12 +5,9 @@ import { connect } from 'react-redux'
 import CSSTransition from 'react-addons-css-transition-group'
 import './style.css'
 import { deleteArticle, loadArticle } from '../../ac'
-//import { ifError } from 'assert';
 import Loader from '../common/loader'
-//import { prototype } from 'stream';
 import { articleSelector } from '../../selectors'
-import {Consumer as LocalConsumer} from '../../context/localization'
-import {Redirect} from 'react-router-dom'
+import { languageContect } from '../../context/localization'
 
 class Article extends PureComponent {
   state = {
@@ -38,34 +35,31 @@ class Article extends PureComponent {
     }
   }
 
-  buttonTitle({articleButtonTitleOpen, articleButtonTitleClose}){
+  buttonTitle({ articleButtonTitleOpen, articleButtonTitleClose }) {
     const { isOpen } = this.props
-    
-    return isOpen ? articleButtonTitleClose : articleButtonTitleOpen
 
+    return isOpen ? articleButtonTitleClose : articleButtonTitleOpen
   }
 
   render() {
     const { article } = this.props
 
-
-console.log('ARTICLE::RENDER::article', article)    
-
+    console.log('ARTICLE::RENDER::article', article)
 
     if (!article) return null
 
     return (
       <div>
         {/* <button onClick={this.handleClick} className={'test--article__btn'}>
-          <LocalConsumer>
+          <LanguageConsumer>
             {(value) => this.buttonTitle(value)}
-          </LocalConsumer>
+          </LanguageConsumer>
         </button>
         <button
           onClick={this.handleDelete}
           className={'test--article-delete__btn'}
         >
-          <LocalConsumer>{(value)=>value.articleButtonTitleDeleteMe}</LocalConsumer>
+          <LanguageConsumer>{(value)=>value.articleButtonTitleDeleteMe}</LanguageConsumer>
         </button> */}
 
         {this.getRealBody()}
@@ -108,24 +102,26 @@ console.log('ARTICLE::RENDER::article', article)
 
     //if (!article.text && article.id) return <Redirect to={`/articles/${article.id}`} />
 
+    const LanguageConsumer = languageContect.Consumer
+
     return (
       <section className={'test--article__body'}>
         <h3>{article.title}</h3>
         <button onClick={this.handleClick} className={'test--article__btn'}>
-          <LocalConsumer>
+          <LanguageConsumer>
             {(value) => this.buttonTitle(value)}
-          </LocalConsumer>
+          </LanguageConsumer>
         </button>
         <button
           onClick={this.handleDelete}
           className={'test--article-delete__btn'}
         >
-          <LocalConsumer>{(value)=>value.articleButtonTitleDeleteMe}</LocalConsumer>
+          <LanguageConsumer>
+            {(value) => value.articleButtonTitleDeleteMe}
+          </LanguageConsumer>
         </button>
 
-        <div>
-          {article.text}
-        </div>
+        <div>{article.text}</div>
         {this.state.error ? null : (
           <CommentList comments={article.comments} articleId={article.id} />
         )}

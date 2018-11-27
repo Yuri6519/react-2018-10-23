@@ -1,16 +1,20 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { incrementActionCreator } from '../../ac'
-import {Consumer as LocalConsumer} from '../../context/localization'
+import { languageContect } from '../../context/localization'
 
 class Counter extends Component {
   render() {
+    const LanguageConsumer = languageContect.Consumer
+
     console.log('Counter')
     return (
       <div>
         <h1>{this.props.countProp}</h1>
         <button onClick={this.handleClick}>
-          <LocalConsumer>{(value)=>value.counterButtonTitle}</LocalConsumer>
+          <LanguageConsumer>
+            {(value) => value.counterButtonTitle}
+          </LanguageConsumer>
         </button>
       </div>
     )

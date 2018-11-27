@@ -1,16 +1,24 @@
 import React, { Component } from 'react'
 import { addComment } from '../../ac'
 import { connect } from 'react-redux'
-import {Consumer as LocalConsumer} from '../../context/localization'
+import { languageContect } from '../../context/localization'
 
 class UserComment extends Component {
   render() {
+    const LanguageConsumer = languageContect.Consumer
+
     return (
       <form>
-        <div><LocalConsumer>{(value)=>value.commentAddTitle}</LocalConsumer></div>
+        <div>
+          <LanguageConsumer>
+            {(value) => value.commentAddTitle}
+          </LanguageConsumer>
+        </div>
         <div>
           <section>
-            <LocalConsumer>{(value)=>value.commentAddUser}</LocalConsumer>
+            <LanguageConsumer>
+              {(value) => value.commentAddUser}
+            </LanguageConsumer>
             <input
               id="inputUser"
               required={true}
@@ -18,22 +26,24 @@ class UserComment extends Component {
               maxLength={100}
             />
             <button onClick={this.handleClick}>
-            <LocalConsumer>{(value)=>value.commentButtonAddTitle}</LocalConsumer>
+              <LanguageConsumer>
+                {(value) => value.commentButtonAddTitle}
+              </LanguageConsumer>
             </button>
           </section>
           <section>
-          <LocalConsumer>{
-            (value) =>
-              <textarea
-                id="textComment"
-                rows="4"
-                cols="100"
-                name="comment"
-                placeholder={value.commentTextAreaPlaceHolder}
-                required={true}
-              />
-          }
-          </LocalConsumer>
+            <LanguageConsumer>
+              {(value) => (
+                <textarea
+                  id="textComment"
+                  rows="4"
+                  cols="100"
+                  name="comment"
+                  placeholder={value.commentTextAreaPlaceHolder}
+                  required={true}
+                />
+              )}
+            </LanguageConsumer>
           </section>
         </div>
       </form>

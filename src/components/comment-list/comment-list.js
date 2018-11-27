@@ -7,8 +7,8 @@ import { UserCommentForm } from '../user-form'
 import { connect } from 'react-redux'
 import { loadAllComments } from '../../ac'
 import Loader from '../common/loader'
-import {Consumer as AuthConsumer} from '../../context/auth'
-import {Consumer as LocalConsumer} from '../../context/localization'
+import { Consumer as AuthConsumer } from '../../context/auth'
+import { languageContect } from '../../context/localization'
 
 import {
   commentObjectLoadingSelector,
@@ -30,9 +30,7 @@ class CommentList extends Component {
   }
 
   render() {
-
-//console.log('comment-list::render::HEREHEREHERE')
-
+    //console.log('comment-list::render::HEREHEREHERE')
 
     return (
       <div>
@@ -59,17 +57,15 @@ class CommentList extends Component {
       <>
         <AuthConsumer>
           {(value) => {
+            //console.log('comment-list::AuthConsumer::value', value)
 
-//console.log('comment-list::AuthConsumer::value', value)
-
-
-          return <h2>{value.userNameFromContext}</h2>}
-          }
+            return <h2>{value.userNameFromContext}</h2>
+          }}
         </AuthConsumer>
         <UserCommentForm articleId={articleId} />
 
         <CSSTransition
-          transitionName="comments" 
+          transitionName="comments"
           transitionEnterTimeout={500}
           transitionLeaveTimeout={500}
         >
@@ -79,18 +75,19 @@ class CommentList extends Component {
     )
   }
 
-  getTextForCommentButton({commentButtonTitleShow, commentButtonTitleHide}){
+  getTextForCommentButton({ commentButtonTitleShow, commentButtonTitleHide }) {
     const { isOpen } = this.props
     return isOpen ? commentButtonTitleHide : commentButtonTitleShow
   }
 
   getButton() {
     const { toggleOpenItem } = this.props
+    const LanguageConsumer = languageContect.Consumer
     return (
       <button onClick={toggleOpenItem} className="test--comment-list__btn">
-      <LocalConsumer>
-        {(value)=>this.getTextForCommentButton(value)}
-      </LocalConsumer>
+        <LanguageConsumer>
+          {(value) => this.getTextForCommentButton(value)}
+        </LanguageConsumer>
       </button>
     )
   }
@@ -98,15 +95,18 @@ class CommentList extends Component {
   getBody() {
     const { comments = [], isOpen } = this.props
     if (!isOpen) return null
+
+    const LanguageConsumer = languageContect.Consumer
+
     return (
       <div className="test--comment-list__body">
         {comments.length ? (
           this.comments
         ) : (
           <h3 className="test--comment-list__empty">
-            <LocalConsumer>
-              {(value)=>value.commentNoCommentText}
-            </LocalConsumer>
+            <LanguageConsumer>
+              {(value) => value.commentNoCommentText}
+            </LanguageConsumer>
           </h3>
         )}
       </div>

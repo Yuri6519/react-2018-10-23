@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
-import {Consumer as LanguageConsumer} from '../../context/localization'
-import {LOCAL_LANG_RUS, LOCAL_LANG_ENG} from '../../constants'
-
+import { LOCAL_LANG_RUS, LOCAL_LANG_ENG } from '../../constants'
+import { languageContect } from '../../context/localization'
 
 export default class UserForm extends Component {
   // state = {
@@ -9,12 +8,12 @@ export default class UserForm extends Component {
   // }
 
   render() {
+    const LanguageConsumer = languageContect.Consumer
+
     return (
       <form>
-        <LanguageConsumer>
-          {(value) => value.userName}
-        </LanguageConsumer>
-        
+        <LanguageConsumer>{(value) => value.userName}</LanguageConsumer>
+
         <input
           // value={this.state.username}
           value={this.props.value}
@@ -22,24 +21,20 @@ export default class UserForm extends Component {
         />
 
         <button onClick={this.handleButtonClick}>
-        <LanguageConsumer>
-          {(value) => value.chngeLng}
-        </LanguageConsumer>
-
+          <LanguageConsumer>{(value) => value.chngeLng}</LanguageConsumer>
         </button>
-
       </form>
     )
   }
 
   handleButtonClick = (evt) => {
-    evt.preventDefault();
+    evt.preventDefault()
 
-    const {currentLang} = this.props
-    const newLang = currentLang === LOCAL_LANG_RUS ? LOCAL_LANG_ENG : LOCAL_LANG_RUS
+    const { currentLang } = this.props
+    const newLang =
+      currentLang === LOCAL_LANG_RUS ? LOCAL_LANG_ENG : LOCAL_LANG_RUS
 
     this.props.onButtonClick(newLang)
-
   }
 
   handleUserNameInput = (event) => {
@@ -54,6 +49,5 @@ export default class UserForm extends Component {
     // this.setState({
     //   username: event.target.value
     // })
-
   }
 }
