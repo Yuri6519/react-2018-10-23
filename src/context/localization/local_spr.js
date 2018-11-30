@@ -28,7 +28,7 @@ export const localLangRUS = {
 export const localLangENG = {
   userName: 'Uaserame: ',
   mainMenu: 'Main menu',
-  chngeLng: 'Change languae',
+  chngeLng: 'Change language',
   menuCounter: 'Counter',
   menuFilters: 'Filters',
   menuArticles: 'Articles',

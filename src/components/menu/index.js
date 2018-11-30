@@ -1,21 +1,17 @@
 import React, { Component } from 'react'
 import MenuItem from './menu-item'
-import { languageContect } from '../../context/localization'
+import { LanguageConsumerObject } from '../../context/localization'
 
 class Menu extends Component {
   render() {
-    const LanguageConsumer = languageContect.Consumer
-
     return (
       <div>
-        <h2>
-          <LanguageConsumer>{(value) => value.mainMenu}</LanguageConsumer>
-        </h2>
+        <h2>{this.props.getTranslatedValue('mainMenu')}</h2>
         {this.props.children}
       </div>
     )
   }
 }
 
-export default Menu
+export default LanguageConsumerObject(Menu)
 export { MenuItem }

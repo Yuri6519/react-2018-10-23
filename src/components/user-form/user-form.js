@@ -1,18 +1,18 @@
 import React, { Component } from 'react'
 import { LOCAL_LANG_RUS, LOCAL_LANG_ENG } from '../../constants'
-import { languageContect } from '../../context/localization'
+import { LanguageConsumerObject } from '../../context/localization'
 
-export default class UserForm extends Component {
+class UserForm extends Component {
   // state = {
   //   username: ''
   // }
 
   render() {
-    const LanguageConsumer = languageContect.Consumer
+    // const LanguageConsumer = languageContect.Consumer
 
     return (
       <form>
-        <LanguageConsumer>{(value) => value.userName}</LanguageConsumer>
+        {this.props.getTranslatedValue('userName')}
 
         <input
           // value={this.state.username}
@@ -21,7 +21,7 @@ export default class UserForm extends Component {
         />
 
         <button onClick={this.handleButtonClick}>
-          <LanguageConsumer>{(value) => value.chngeLng}</LanguageConsumer>
+          {this.props.getTranslatedValue('chngeLng')}
         </button>
       </form>
     )
@@ -51,3 +51,5 @@ export default class UserForm extends Component {
     // })
   }
 }
+
+export default LanguageConsumerObject(UserForm)
