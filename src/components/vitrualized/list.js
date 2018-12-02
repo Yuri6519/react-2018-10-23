@@ -35,7 +35,7 @@ function rowRenderer({
     style, // Style object to be applied to row (to position it)
  }) {
 
-    console.log('rowRenderer::HEREHEREHEREHERE')
+    //console.log('rowRenderer::HEREHEREHEREHERE')
 
     return (
     
