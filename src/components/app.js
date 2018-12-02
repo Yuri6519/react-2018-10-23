@@ -8,6 +8,7 @@ import CommentsRoot from '../routes/comments-root'
 import Menu, { MenuItem } from '../components/menu'
 import { Provider as AuthProvider } from '../context/auth'
 import { LOCAL_LANG_RUS } from '../constants'
+import {VirtList, VirtGrid} from '../components/vitrualized'
 
 import { LanguageProviderObject } from '../context/localization'
 
@@ -49,8 +50,15 @@ export default class App extends Component {
               <MenuItem to="/comments" name="menuComments">
                 Comments
               </MenuItem>
+              <MenuItem to="/virtlist" name="menuVirtList">
+                Virtual List
+              </MenuItem>
+              <MenuItem to="/virtgrid" name="menuVirtGrid">
+                Virtual Grid
+              </MenuItem>
             </Menu>
           </div>
+
 
           <Switch>
             <Route path="/counter" exact component={Counter} />
@@ -62,6 +70,9 @@ export default class App extends Component {
             <Route path="/comments" component={CommentsRoot} />
             <Route path="/error" render={() => <h2>Ошибка</h2>} />
 
+            <Route path="/virtlist" component={VirtList} />
+            <Route path="/virtgrid" component={VirtGrid} />
+
             <AuthProvider
               value={{
                 userNameFromContext: this.state.userName
@@ -69,6 +80,7 @@ export default class App extends Component {
             >
               <Route path="/articles" component={ArticlesRoute} />
             </AuthProvider>
+
           </Switch>
         </div>
       </LanguageProviderObject>
